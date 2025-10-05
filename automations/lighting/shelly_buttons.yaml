@@ -47,7 +47,7 @@
         metadata: {}
         data: {}
         target:
-          entity_id: light.grupp_matsal
+          entity_id: light.matsalen
 
 - id: '1734259770344'
   alias: Lampor av/PÅ arbetsrum
