@@ -1,0 +1,160 @@
+# Master Lighting Control Scripts
+# Scripts för dashboard belysningskontroll
+
+activate_cozy_mode:
+  alias: "Aktivera Mysläge"
+  icon: mdi:candle
+  sequence:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.cozy_mode
+    - service: input_boolean.turn_off
+      target:
+        entity_id: input_boolean.alert_mode
+    - service: scene.turn_on
+      target:
+        entity_id: scene.myslage
+      data:
+        transition: "{{ states('input_number.fade_duration')|int }}"
+
+toggle_alert_mode:
+  alias: "Toggle Varningsläge"
+  icon: mdi:alert-circle
+  sequence:
+    - if:
+        - condition: state
+          entity_id: input_boolean.alert_mode
+          state: "off"
+      then:
+        # Aktivera alarm
+        - service: input_boolean.turn_on
+          target:
+            entity_id: input_boolean.alert_mode
+        - service: input_boolean.turn_off
+          target:
+            entity_id: input_boolean.cozy_mode
+        - service: scene.turn_on
+          target:
+            entity_id: scene.varningslage
+        - service: script.alert_pulse
+      else:
+        # Avaktivera alarm
+        - service: script.deactivate_all_modes
+
+alert_pulse:
+  alias: "Varningsläge Pulsering"
+  icon: mdi:pulse
+  mode: restart
+  sequence:
+    - repeat:
+        while:
+          - condition: state
+            entity_id: input_boolean.alert_mode
+            state: "on"
+        sequence:
+          # Dimma ner
+          - service: light.turn_on
+            target:
+              entity_id: group.all_lights
+            data:
+              brightness: 100
+              transition: 0.5
+          - delay:
+              seconds: 0.8
+          # Lyse upp
+          - service: light.turn_on
+            target:
+              entity_id: group.all_lights
+            data:
+              brightness: 255
+              transition: 0.5
+          - delay:
+              seconds: 0.8
+
+master_lights_on:
+  alias: "Alla Lampor På"
+  icon: mdi:lightbulb-group
+  sequence:
+    - service: input_boolean.turn_on
+      target:
+        entity_id: input_boolean.master_lights
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.cozy_mode
+          - input_boolean.alert_mode
+    - service: script.turn_off
+      target:
+        entity_id: script.alert_pulse
+    - service: light.turn_on
+      target:
+        entity_id: group.all_lights
+      data:
+        brightness_pct: 80
+        color_temp_kelvin: 4000
+        transition: 2
+
+master_lights_off:
+  alias: "Alla Lampor Av"
+  icon: mdi:lightbulb-off
+  sequence:
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.master_lights
+          - input_boolean.cozy_mode
+          - input_boolean.alert_mode
+    - service: light.turn_off
+      target:
+        entity_id: group.all_lights
+      data:
+        transition: 3
+
+quick_living_room:
+  alias: "Vardagsrum Snabb"
+  icon: mdi:sofa
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id: group.living_room_lights
+      data:
+        brightness_pct: 75
+        color_temp_kelvin: 3200
+        transition: 1
+
+quick_kitchen:
+  alias: "Kök Snabb"
+  icon: mdi:chef-hat
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id: group.kitchen_lights
+      data:
+        brightness_pct: 90
+        color_temp_kelvin: 4000
+        transition: 1
+
+quick_outdoor:
+  alias: "Utomhus Snabb"
+  icon: mdi:outdoor-lamp
+  sequence:
+    - service: light.turn_on
+      target:
+        entity_id: group.outdoor_lights
+      data:
+        brightness_pct: 85
+        transition: 1
+
+deactivate_all_modes:
+  alias: "Avaktivera Alla Lägen"
+  icon: mdi:power-off
+  sequence:
+    - service: input_boolean.turn_off
+      target:
+        entity_id:
+          - input_boolean.cozy_mode
+          - input_boolean.alert_mode
+    # Stoppa pulsering
+    - service: script.turn_off
+      target:
+        entity_id: script.alert_pulse

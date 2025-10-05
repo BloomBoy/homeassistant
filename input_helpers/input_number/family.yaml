@@ -1,0 +1,32 @@
+# Family input_number helpers
+anton_weekly_time:
+  name: "Anton Weekly Screen Time"
+  min: 0
+  max: 2520  # 42 hours per week max
+  step: 1
+  unit_of_measurement: "minutes"
+  icon: mdi:clock-outline
+
+resterande_skarmtid_anton:
+  name: "Anton Remaining Screen Time"
+  min: 0
+  max: 720  # 12 hours max per session
+  step: 1
+  unit_of_measurement: "minutes"
+  icon: mdi:clock-time-remaining-outline
+
+begar_tid_anton:
+  name: "Anton Requested Time"
+  min: 1
+  max: 240  # 4 hours max request
+  step: 1
+  unit_of_measurement: "minutes"
+  icon: mdi:clock-plus-outline
+
+anton_remaining_screentime_start_of_day:
+  name: "Anton Screen Time Start of Day"
+  min: 0
+  max: 2520
+  step: 1
+  unit_of_measurement: "minutes"
+  icon: mdi:clock-start

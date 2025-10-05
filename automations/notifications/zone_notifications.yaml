@@ -1,0 +1,78 @@
+- id: '1724097990602'
+  alias: No not disturb Paf notis vilmer
+  description: ''
+  trigger:
+  - platform: zone
+    entity_id: person.vilmer
+    zone: zone.paf
+    event: enter
+    id: 'arrival '
+  - platform: zone
+    entity_id: person.vilmer
+    zone: zone.paf
+    event: leave
+    id: departure
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - 'arrival '
+      - condition: state
+        entity_id: sensor.pixel_7_do_not_disturb_sensor
+        state: 'off'
+      sequence:
+      - service: notify.mobile_app_pixel_7
+        metadata: {}
+        data:
+          message: Slå på stör ej
+          title: Slå på stör ej
+    - conditions:
+      - condition: trigger
+        id:
+        - departure
+      - condition: not
+        conditions:
+        - condition: state
+          entity_id: sensor.pixel_7_do_not_disturb_sensor
+          state: 'off'
+      sequence:
+      - service: notify.mobile_app_pixel_7
+        metadata: {}
+        data:
+          message: Slå AV stör ej
+          title: Slå AV stör ej
+  mode: single
+
+- id: '1725770532831'
+  alias: Dammen check
+  description: ''
+  triggers:
+  - minutes: /3
+    trigger: time_pattern
+  - entity_id:
+    - switch.plug_001
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: switch.plug_001
+    state: 'on'
+  actions:
+  - metadata: {}
+    data:
+      title: DAMMEN ÄR PÅ
+      message: Dammen är påslagen, se till att den inte går tom
+    action: notify.mobile_app_pixel_6_pro
+  - if:
+    - condition: state
+      entity_id: input_boolean.vilmer_dnd
+      state: 'off'
+    then:
+    - metadata: {}
+      data:
+        message: Damme är på
+        title: Dammen är på
+      action: notify.mobile_app_pixel_7
+  mode: single

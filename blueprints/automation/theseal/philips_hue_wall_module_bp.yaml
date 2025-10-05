@@ -1,0 +1,164 @@
+blueprint:
+  name: Philips Hue Wall Module 2.0
+  description: "Philips Hue Wall Module (RDM001 / RDM004)\nThis blueprint allows you
+    to use a Philips Wall Module (RDM001 and RDM004) to trigger automations.\n You
+    need to have the module paired to your Home Assistant Zigbee integration (ZHA).
+    You might be to configure the module depending on which physical switch used (single/double
+    and rocker/push). See https://zigbee.blakadder.com/Philips_RDM001.html and https://community.home-assistant.io/t/how-to-configure-the-philips-hue-wall-module-to-use-push-button-momentary-type-wall-switches-zha/451125/13
+    for more information."
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Signify switch to use
+      selector:
+        device:
+          filter:
+          - integration: zha
+            manufacturer: Signify Netherlands B.V.
+            model: RDM001
+          - integration: zha
+            manufacturer: Signify Netherlands B.V.
+            model: RDM004
+          multiple: false
+    left_press:
+      name: Left Press
+      description: Left press
+      default: []
+      selector:
+        action: {}
+    left_short_release:
+      name: Left Short Release
+      description: Left Short Release
+      default: []
+      selector:
+        action: {}
+    left_double_press:
+      name: Left Double Press
+      description: Left Double Press
+      default: []
+      selector:
+        action: {}
+    left_triple_press:
+      name: Left Triple Press
+      description: Left Triple Press
+      default: []
+      selector:
+        action: {}
+    left_quadruple_press:
+      name: Left Quadruple Press
+      description: Left Quadruple Press
+      default: []
+      selector:
+        action: {}
+    left_quintuple_press:
+      name: Left Quintuple Press
+      description: Left Quadruple Press
+      default: []
+      selector:
+        action: {}
+    left_hold:
+      name: Left Hold
+      description: Left Hold
+      default: []
+      selector:
+        action: {}
+    left_long_release:
+      name: Left Long Release
+      description: Left Long Relase
+      default: []
+      selector:
+        action: {}
+    right_press:
+      name: Right Press
+      description: Right press
+      default: []
+      selector:
+        action: {}
+    right_short_release:
+      name: Right Short Release
+      description: Right Short Release
+      default: []
+      selector:
+        action: {}
+    right_double_press:
+      name: Right Double Press
+      description: Right Double Press
+      default: []
+      selector:
+        action: {}
+    right_triple_press:
+      name: Right Triple Press
+      description: Right Triple Press
+      default: []
+      selector:
+        action: {}
+    right_quadruple_press:
+      name: Right Quadruple Press
+      description: Right Quadruple Press
+      default: []
+      selector:
+        action: {}
+    right_quintuple_press:
+      name: Right Quintuple Press
+      description: Right Quadruple Press
+      default: []
+      selector:
+        action: {}
+    right_hold:
+      name: Right Hold
+      description: Right Hold
+      default: []
+      selector:
+        action: {}
+    right_long_release:
+      name: Right Long Release
+      description: Right Long Relase
+      default: []
+      selector:
+        action: {}
+  source_url: https://gist.github.com/theseal/a9fa95b83c07462aec9f53f9af7fc035
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: !input remote
+action:
+- variables:
+    command: '{{ trigger.event.data.command }}'
+    cluster_id: '{{ trigger.event.data.cluster_id }}'
+    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    args: '{{ trigger.event.data.args }}'
+- choose:
+  - conditions: '{{ command == "left_press" }}'
+    sequence: !input left_press
+  - conditions: '{{ command == "left_short_release" }}'
+    sequence: !input left_short_release
+  - conditions: '{{ command == "left_double_press" }}'
+    sequence: !input left_double_press
+  - conditions: '{{ command == "left_triple_press" }}'
+    sequence: !input left_triple_press
+  - conditions: '{{ command == "left_quadruple_press" }}'
+    sequence: !input left_quadruple_press
+  - conditions: '{{ command == "left_quintuple_press" }}'
+    sequence: !input left_quintuple_press
+  - conditions: '{{ command == "left_hold" }}'
+    sequence: !input left_hold
+  - conditions: '{{ command == "left_long_release" }}'
+    sequence: !input left_long_release
+  - conditions: '{{ command == "right_press" }}'
+    sequence: !input right_press
+  - conditions: '{{ command == "right_short_release" }}'
+    sequence: !input right_short_release
+  - conditions: '{{ command == "right_double_press" }}'
+    sequence: !input right_double_press
+  - conditions: '{{ command == "right_triple_press" }}'
+    sequence: !input right_triple_press
+  - conditions: '{{ command == "right_quadruple_press" }}'
+    sequence: !input right_quadruple_press
+  - conditions: '{{ command == "right_quintuple_press" }}'
+    sequence: !input right_quintuple_press
+  - conditions: '{{ command == "right_hold" }}'
+    sequence: !input right_hold
+  - conditions: '{{ command == "right_long_release" }}'
+    sequence: !input right_long_release

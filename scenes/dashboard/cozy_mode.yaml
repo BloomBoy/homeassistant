@@ -1,0 +1,112 @@
+# Mysläge - Cozy Mode Scene
+# Varmt, trevligt ljus för avslappning
+
+- id: 'cozy_mode_scene'
+  name: Mysläge
+  icon: mdi:candle
+  entities:
+    # Vardagsrum - varmt och mysigt
+    light.vardagsrum_wiz_01:
+      state: on
+      brightness: 25
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_wiz_02:
+      state: on
+      brightness: 30
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_wiz_03:
+      state: on
+      brightness: 25
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_wiz_04:
+      state: on
+      brightness: 30
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_wiz_05:
+      state: on
+      brightness: 25
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_wiz_06:
+      state: on
+      brightness: 30
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_treudd_mitt:
+      state: on
+      brightness: 35
+      color_temp_kelvin: 2000
+      transition: 3
+    light.vardagsrum_treudd_vanster:
+      state: on
+      brightness: 30
+      color_temp_kelvin: 2000
+      transition: 3
+    light.tv_bank_lampa:
+      state: on
+      brightness: 20
+      color_temp_kelvin: 2000
+      transition: 3
+
+    # Kök - varm bänkbelysning
+    light.koksbank_hoger_lampa_2:
+      state: on
+      brightness: 40
+      color_temp_kelvin: 2200
+      transition: 3
+    light.koksbank_mitten_lampa_3:
+      state: on
+      brightness: 40
+      color_temp_kelvin: 2200
+      transition: 3
+    light.koksbank_vanster_lampa:
+      state: on
+      brightness: 40
+      color_temp_kelvin: 2200
+      transition: 3
+
+    # Hall - subtil belysning
+    light.hall_byra_belysning:
+      state: on
+      brightness: 25
+      color_temp_kelvin: 2200
+      transition: 3
+    light.hall_kapprum_strip:
+      state: on
+      brightness: 30
+      color_temp_kelvin: 2000
+      transition: 3
+
+    # Matsal - sidobord endast
+    light.matsal_sidobord:
+      state: on
+      brightness: 35
+      color_temp_kelvin: 2000
+      transition: 3
+
+    # Utomhus - mjuk belysning
+    light.utomhus_ytterdorr:
+      state: on
+      brightness: 50
+      color_temp_kelvin: 2700
+      transition: 3
+    light.utomhus_fasad_strip:
+      state: on
+      brightness: 40
+      color_temp_kelvin: 2000
+      transition: 3
+
+    # Alla andra lampor släcks
+    light.arbetsrum_taklampa:
+      state: off
+      transition: 3
+    light.hall_huvudtaklampa:
+      state: off
+      transition: 3
+    light.korridor_belysning:
+      state: off
+      transition: 3

@@ -1,0 +1,74 @@
+blueprint:
+  name: Dim Lights - 
+  description: >
+    This blueprint dims lights when a button is held down and sets a value in an input_text helper on release. This helper is shared between all dim functions.
+  domain: automation
+  input:
+    light_target:
+      name: Light(s) to control
+      description: The light or lights you want to dim.
+      selector:
+        target:
+          entity:
+            domain: light
+    wallswitch_device:
+      name: Wall switch
+      description: The wall switch device that triggers the dimming.
+      selector:
+        device:
+          integration: zha
+
+    button_choice:
+      name: Button Choice
+      description: "Select the command to trigger the automation"
+      default: "right_press_release"
+      selector:
+        select:
+          options:
+            - "right"
+            - "left"
+
+trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input wallswitch_device
+      command: "{{ button_choice }}_hold"
+    id: hold
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input wallswitch_device
+      command: "{{ button_choice }}_hold_release"
+    id: hold_release
+
+action:
+  - choose:
+      - conditions:
+          - condition: trigger
+            id: hold
+        sequence:
+          - service: light.turn_on
+            data:
+              brightness_step_pct: |
+                {% if states('input_text.last_dim') == '20' %}
+                  -20
+                {% else %}
+                  20
+                {% endif %}
+            target:
+              area_id: hall
+      - conditions:
+          - condition: trigger
+            id: hold_release
+        sequence:
+          - service: input_text.set_value
+            target:
+              entity_id: input_text.last_dim
+            data:
+              value: |
+                {% if states('input_text.last_dim') == '20' %}
+                  -20
+                {% else %}
+                  20
+                {% endif %}

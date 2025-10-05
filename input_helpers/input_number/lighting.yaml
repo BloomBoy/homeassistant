@@ -1,0 +1,9 @@
+# Lighting input_number helpers
+motion_lights_brightness:
+  name: "Motion Lights Brightness"
+  min: 1
+  max: 100
+  step: 1
+  unit_of_measurement: "%"
+  icon: mdi:brightness-percent
+  initial: 30

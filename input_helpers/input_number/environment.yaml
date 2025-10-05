@@ -1,0 +1,9 @@
+# Environment input_number helpers
+fan_speed:
+  name: "AirGradient Fan Speed"
+  min: 0
+  max: 100
+  step: 1
+  unit_of_measurement: "%"
+  icon: mdi:fan
+  initial: 0

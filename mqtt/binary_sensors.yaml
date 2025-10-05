@@ -1,0 +1,10 @@
+# MQTT Binary Sensor entities
+binary_sensor:
+  - name: "Pi GPIO Button"
+    unique_id: "pi_gpio_button_01"
+    state_topic: "homeassistant/pi/button/state"
+    payload_on: "ON"
+    # This makes it a momentary button in HA
+    off_delay: 1
+    device_class: "power"
+    qos: 1

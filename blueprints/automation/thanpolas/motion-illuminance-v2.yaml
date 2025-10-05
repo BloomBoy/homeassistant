@@ -1,0 +1,95 @@
+blueprint:
+  name: Motion-activated Light with illuminance v2
+  description: Turn on a light when motion is detected and illuminance is below a
+    set Lux level. Will use a configured scene instead of the previous light setting
+    and will not trigger when the lights are already on to avoid overriding user defined
+    lighting (i.e. you've set the lights to a certain scene, this automation should
+    not override this). This automation is based on the work of Danielbook https://gist.github.com/Danielbook/7814e7eb32e880b2d7c3fb5ba8430f4f
+    Blueprint version 1.0.0
+  domain: automation
+  source_url: https://gist.github.com/thanpolas/698889d0377c2e3240f821c46f33b8d4
+  input:
+    motion_entity:
+      name: Motion Sensor
+      selector:
+        entity:
+          domain:
+          - binary_sensor
+          device_class:
+          - motion
+          multiple: false
+    lux_entity:
+      name: Illuminance Sensor
+      selector:
+        entity:
+          domain:
+          - sensor
+          device_class:
+          - illuminance
+          multiple: false
+    lux_level:
+      name: Illuminance level
+      description: If lux is below this value and motion is detected, the light will
+        turn on.
+      default: 100
+      selector:
+        number:
+          min: 0.0
+          max: 1000.0
+          step: 1.0
+          mode: slider
+    light_entity:
+      name: Light
+      selector:
+        entity:
+          domain:
+          - light
+          multiple: false
+    desired_scene:
+      name: Scene
+      description: The scene to use when this automation triggers (should be a "scene"
+        entity on your HA)
+      selector:
+        target:
+          entity:
+          - domain:
+            - scene
+    no_motion_wait:
+      name: Wait time
+      description: Time to leave the light on after last motion is detected.
+      default: 120
+      selector:
+        number:
+          min: 0.0
+          max: 3600.0
+          unit_of_measurement: seconds
+          step: 1.0
+          mode: slider
+mode: single
+max_exceeded: silent
+trigger:
+  platform: state
+  entity_id: !input motion_entity
+  from: 'off'
+  to: 'on'
+condition:
+  alias: Illuminance threshold is met and lights are not already open
+  condition: and
+  conditions:
+  - condition: numeric_state
+    entity_id: !input lux_entity
+    below: !input lux_level
+  - condition: state
+    entity_id: !input light_entity
+    state: 'off'
+action:
+- service: hue.activate_scene
+  target: !input desired_scene
+- wait_for_trigger:
+    platform: state
+    entity_id: !input motion_entity
+    from: 'on'
+    to: 'off'
+    for: !input no_motion_wait
+- service: light.turn_off
+  entity_id: !input light_entity

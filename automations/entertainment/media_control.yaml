@@ -1,0 +1,55 @@
+- id: '1749221951762'
+  alias: Pling Plong
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.huvudentre_dorrklockan_ringer
+    to: 'on'
+  conditions: []
+  actions:
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.vardagsrum_huvudljud_huvudljud
+    data:
+      media_content_id: media-source://media_source/local/Door Bell Sound Effect.mp3
+      media_content_type: audio/mpeg
+    metadata:
+      title: Door Bell Sound Effect.mp3
+      thumbnail:
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://media_source
+  mode: single
+
+- id: '1750526610261'
+  alias: Ny automatisering
+  description: ''
+  triggers:
+  - type: turned_on
+    device_id: e2aa8c0c4eb6b103c79cd9b657e7efc7
+    entity_id: 50cdb36ae87f394a72f0144084c5144a
+    domain: remote
+    trigger: device
+  conditions: []
+  actions:
+  - action: media_player.play_media
+    target:
+      entity_id: media_player.vardagsrum_huvudljud_huvudljud
+    data:
+      media_content_id: media-source://media_source/local/THX Sound Effect Remastered
+        HD (Warning Huge Bass).mp3
+      media_content_type: audio/mpeg
+    metadata:
+      title: THX Sound Effect Remastered HD (Warning Huge Bass).mp3
+      thumbnail:
+      media_class: music
+      children_media_class:
+      navigateIds:
+      - {}
+      - media_content_type: app
+        media_content_id: media-source://media_source
+  mode: single

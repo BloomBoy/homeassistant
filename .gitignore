@@ -1,0 +1,24 @@
+# Databaser och loggar
+*.db
+*.db-shm
+*.db-wal
+*.log
+*.log.*
+
+# Runtime/cache data
+.storage/
+deps/
+tts/
+.cloud/
+
+# Känsliga filer
+secrets.yaml
+*.key
+*.pem
+
+# Temporära filer
+*.tmp
+*.backup
+__pycache__/
+*.pyc
+.env

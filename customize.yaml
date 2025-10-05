@@ -1,0 +1,4 @@
+# Customize.yaml - Cleaned up
+# All entity friendly names now managed via entity registry instead
+
+customize: {}

@@ -1,0 +1,220 @@
+- id: '1750342282963'
+  alias: AirGradient Fan Vilmer
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.airgradient_koldioxid
+  conditions: []
+  actions:
+  - sequence:
+    - action: input_number.set_value
+      target:
+        entity_id: input_number.fan_speed
+      data:
+        value: '{% set c = states(''sensor.airgradient_koldioxid'') | float %} {#
+          Compute linear mapping: at 800 ppm → 0, at 1000 ppm → 100 #} {% set raw
+          = ((c - 800) / 200) * 100 %} {# Clamp between 0 and 100; round or floor
+          as desired #} {{ [0, [raw, 100] | min] | max | round(0) }}
+
+          '
+    - if:
+      - condition: numeric_state
+        entity_id: input_number.fan_speed
+        below: 30
+        above: 0
+      then:
+      - action: input_number.set_value
+        metadata: {}
+        data:
+          value: 30
+        target:
+          entity_id: input_number.fan_speed
+  mode: single
+
+- id: '1744625663137'
+  alias: Send Fan PWM
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - input_number.fan_speed
+  conditions: []
+  actions:
+  - action: mqtt.publish
+    data:
+      evaluate_payload: false
+      qos: '0'
+      retain: false
+      topic: fan/pwm
+      payload: '{{ (states(''input_number.fan_speed'') | float / 100) | string }}'
+  mode: single
+
+- id: '1755715690264'
+  alias: 'Luftkvalitet: Varning vid höga partikelnivåer'
+  description: Skickar en notis till hela familjen när PM-nivåer överstiger fördefinierade
+    hälsonivåer, med specialhantering för PM0.3.
+  triggers:
+  - entity_id: sensor.luftkvalitet_ute_pm03
+    above: 3000
+    trigger: numeric_state
+  - entity_id: sensor.airgradient_pm03
+    above: 3000
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_garage_pm03
+    above: 3000
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_arbetsrum_pm03
+    above: 3000
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_ute_pm1
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_ute_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_ute_pm10
+    above: 45
+    trigger: numeric_state
+  - entity_id: sensor.airgradient_pm1
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.airgradient_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.airgradient_pm10
+    above: 45
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_garage_pm1
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_garage_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_garage_pm10
+    above: 45
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_arbetsrum_pm1
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_arbetsrum_pm25
+    above: 15
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_arbetsrum_pm10
+    above: 45
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state | float(0) > 10000 and trigger.entity_id.endswith(''pm03'')
+          }}'
+      sequence:
+      - data:
+          title: '⚠️ HÖG partikelnivå: {{ trigger.to_state.attributes.friendly_name
+            }}'
+          message: Antalet ultrafina partiklar (PM0.3) är nu {{ trigger.to_state.state
+            | round(0) }} particles/dl. Detta är en hög nivå.
+        action: notify.familjen
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state | float(0) > 35 and (trigger.entity_id.endswith(''pm25'')
+          or trigger.entity_id.endswith(''pm1'')) }}'
+      sequence:
+      - data:
+          title: '⚠️ HÖG partikelnivå: {{ trigger.to_state.attributes.friendly_name
+            }}'
+          message: Nivån för {{ trigger.entity_id.split("_")[-1].upper() }} är nu
+            {{ trigger.to_state.state | round(0) }} µg/m³. Detta är en hög nivå.
+        action: notify.familjen
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state | float(0) > 75 and trigger.entity_id.endswith(''pm10'')
+          }}'
+      sequence:
+      - data:
+          title: '⚠️ HÖG partikelnivå: {{ trigger.to_state.attributes.friendly_name
+            }}'
+          message: Nivån för PM10 är nu {{ trigger.to_state.state | round(0) }} µg/m³.
+            Detta är en hög nivå.
+        action: notify.familjen
+    default:
+    - data:
+        title: 'Moderata partikelnivåer: {{ trigger.to_state.attributes.friendly_name
+          }}'
+        message: "{% if trigger.entity_id.endswith('pm03') %}\n  Antalet ultrafina
+          partiklar (PM0.3) är nu {{ trigger.to_state.state | round(0) }} particles/dl.\n{%
+          else %}\n  Nivån för {{ trigger.entity_id.split(\"_\")[-1].upper() }} är
+          nu {{ trigger.to_state.state | round(0) }} µg/m³.\n{% endif %}"
+      action: notify.familjen
+  mode: single
+
+- id: '1755715714045'
+  alias: 'Luftkvalitet: Varning vid högt VOC-index (alla platser)'
+  description: Skickar en notis till hela familjen när VOC-index på någon plats har
+    legat över 300 i mer än 7 minuter.
+  triggers:
+  - entity_id: sensor.luftkvalitet_ute_voc_index
+    above: 300
+    for:
+      minutes: 7
+    trigger: numeric_state
+  - entity_id: sensor.airgradient_voc_index
+    above: 300
+    for:
+      minutes: 7
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_garage_voc_index
+    above: 300
+    for:
+      minutes: 7
+    trigger: numeric_state
+  - entity_id: sensor.luftkvalitet_arbetsrum_voc_index
+    above: 300
+    for:
+      minutes: 7
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - data:
+      title: '⚠️ Högt VOC-index: {{ trigger.to_state.attributes.friendly_name }}'
+      message: 'VOC-indexet vid "{{ trigger.to_state.attributes.friendly_name }}"
+        har varit förhöjt en längre tid (över 300 i 7 min). Nuvarande värde: {{ trigger.to_state.state
+        | round(0) }}.'
+    action: notify.familjen
+  mode: single
+
+- id: '1755957546353'
+  alias: 'Luftkvalitet: Varning vid hög CO2-nivå'
+  description: Skickar en notis om CO2-nivån överstiger 1000 ppm i mer än 10 minuter
+    i arbetsrummet eller Vilmers rum.
+  triggers:
+  - entity_id:
+    - sensor.airgradient_koldioxid
+    - sensor.luftkvalitet_arbetsrum_koldioxid
+    above: 1000
+    for:
+      minutes: 10
+    trigger: numeric_state
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ trigger.to_state.state | int > 1500 }}'
+      sequence:
+      - data:
+          title: "🧠 HÖG CO2-nivå: {{ trigger.to_state.attributes.friendly_name
+            }}"
+          message: CO2-nivån är nu {{ trigger.to_state.state | round(0) }} ppm. Detta
+            kan påverka koncentration och orsaka trötthet. Vädra rummet nu!
+        action: notify.familjen
+    default:
+    - data:
+        title: "💨 Förhöjd CO2-nivå: {{ trigger.to_state.attributes.friendly_name
+          }}"
+        message: CO2-nivån är nu {{ trigger.to_state.state | round(0) }} ppm. Dags
+          att vädra för att få in frisk luft.
+      action: notify.familjen
+  mode: single

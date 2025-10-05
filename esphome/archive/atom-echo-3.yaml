@@ -1,0 +1,32 @@
+esphome:
+  name: atom-echo-3
+  friendly_name: Atom Echo 3
+
+esp32:
+  board: esp32dev
+  framework:
+    type: arduino
+
+# Enable logging
+logger:
+
+# Enable Home Assistant API
+api:
+  encryption:
+    key: "B+Nd9+hhMVtF/LXfeP7FqAM5tHRrTpMt6Ox6Eh9Z214="
+
+ota:
+  - platform: esphome
+    password: "d21132a0f501d29f9259eca7678e7bdc"
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+  # Enable fallback hotspot (captive portal) in case wifi connection fails
+  ap:
+    ssid: "Atom-Echo-3 Fallback Hotspot"
+    password: "LyGnlECELp7l"
+
+captive_portal:
+    

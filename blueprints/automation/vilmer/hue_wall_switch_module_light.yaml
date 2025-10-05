@@ -1,0 +1,43 @@
+blueprint:
+  name: Wall Switch Blueprint
+  description: "Simple blueprint for hue wall swtich module light control"
+  domain: automation
+  input:
+    switch_device:
+      name: Device
+      description: "Select the device to trigger the event"
+      selector:
+        device:
+          integration: zha
+          model: RDM001
+    button_choice:
+      name: Button Choice
+      description: "Select the command to trigger the automation"
+      default: "right_press_release"
+      selector:
+        select:
+          options:
+            - "right_press_release"
+            - "left_press_release"
+    light_target:
+      name: Light
+      description: "Select the light to toggle"
+      selector:
+        target:
+          entity:
+            domain: light
+
+trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: !input switch_device
+      command: !input button_choice
+
+condition: []
+
+action:
+  - service: light.toggle
+    target: !input light_target
+
+mode: single

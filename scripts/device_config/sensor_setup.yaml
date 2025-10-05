@@ -1,0 +1,8 @@
+set_sens_vibration_kok:
+  alias: Set sens vibration kök
+  use_blueprint:
+    path: niro1987/zha_aqara_vibration_set_sensitivity.yaml
+    input:
+      device: 99346472330483d874da6ed7d304a6ff
+      sensitivity: High
+  description: ''

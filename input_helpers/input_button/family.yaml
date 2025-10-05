@@ -1,0 +1,4 @@
+# Family input_button helpers
+middagstimer_start:
+  name: "Start Dinner Timer"
+  icon: mdi:timer-play

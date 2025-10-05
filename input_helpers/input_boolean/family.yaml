@@ -1,0 +1,12 @@
+# Family input_boolean helpers
+skarmtid_straff_aktivt:
+  name: "Screen Time Punishment Active"
+  icon: mdi:account-cancel-outline
+
+middagstimer_bekraftad:
+  name: "Dinner Timer Confirmed"
+  icon: mdi:check-circle-outline
+
+vilmer_dnd:
+  name: "Vilmer Do Not Disturb"
+  icon: mdi:phone-off

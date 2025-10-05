@@ -1,0 +1,219 @@
+toalett_belysning_on:
+  alias: Toalett Belysning On
+  sequence:
+  - parallel:
+    - sequence:
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id: light.toalett_vagglampa_vanster
+    - sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 200
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id:
+          - light.toalett_vagglampa_mitten
+    - sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 300
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id:
+          - light.toalett_vagglampa_hoger
+  description: ''
+toalett_belysning_off:
+  alias: Toalett Belysning Off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 2
+    target:
+      entity_id:
+      - light.toalett_vagglampa_mitten
+      - light.toalett_vagglampa_vanster
+      - light.toalett_vagglampa_hoger
+  description: ''
+grus_trip_trapp_trull:
+  alias: Grus trip trapp trull
+  sequence:
+  - sequence:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_01
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_02
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_03
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_04
+  description: ''
+grus_av:
+  alias: Grus av
+  sequence:
+  - service: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id:
+      - ea538e72060f24941b703cad160925eb
+      - c3098c8830936e38d86e1964c8ca4ff3
+      - 883bd0de4f92c6c38f0be0506f4db1b7
+      - 4b8dc1ef1f6b07a14d7384be071c6993
+  description: ''
+set_sens_vibration_kok:
+  alias: Set sens vibration kök
+  use_blueprint:
+    path: niro1987/zha_aqara_vibration_set_sensitivity.yaml
+    input:
+      device: 99346472330483d874da6ed7d304a6ff
+      sensitivity: High
+  description: ''
+vilket_lights_of_120_sec:
+  alias: Vilket Lights of 120 sec
+  sequence:
+  - service: light.turn_off
+    metadata: {}
+    data:
+      transition: 20
+    target:
+      area_id: sovrum
+  description: ''
+vilmer_light_red_flash:
+  alias: Vilmer Light Red Flash
+  sequence:
+  - sequence:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        flash: short
+        rgb_color:
+        - 255
+        - 0
+        - 0
+        transition: 1
+      target:
+        entity_id: light.vilmer_sanglampa
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
+    - action: light.turn_on
+      metadata: {}
+      data:
+        kelvin: 2000
+        transition: 3
+      target:
+        entity_id: light.vilmer_sanglampa
+  description: ''
+light_of_vilmer_check:
+  alias: Light Of Vilmer Check
+  sequence:
+  - if:
+    - condition: time
+      weekday:
+      - fri
+      - thu
+      - wed
+      - tue
+      - mon
+      after: '19:30:00'
+    - condition: state
+      entity_id: light.vilmer_sanglampa
+      state: 'on'
+    then:
+    - choose:
+      - conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: sensor.pixel_7_battery_state
+            state: charging
+        sequence:
+        - action: script.vilmer_light_red_flash
+          metadata: {}
+          data: {}
+        - stop: Telefonen laddar inte
+      - conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.pixel_7_alarm_withiing_next_105h
+            state: 'on'
+        sequence:
+        - action: script.vilmer_light_red_flash
+          metadata: {}
+          data: {}
+        - stop: Telefonen laddar inte
+  description: ''
+notification_test:
+  sequence:
+  - action: notify.mobile_app_pixel_7
+    metadata: {}
+    data:
+      title: testar
+      message: testar
+  - action: notify.mobile_app_pixel_6_pro
+    metadata: {}
+    data:
+      message: tesar
+      title: TESTAr
+  alias: notification test
+  description: ''

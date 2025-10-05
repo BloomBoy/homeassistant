@@ -1,0 +1,122 @@
+toalett_belysning_on:
+  alias: Toalett Belysning On
+  sequence:
+  - parallel:
+    - sequence:
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id: light.toalett_vagglampa_vanster
+    - sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 200
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id:
+          - light.toalett_vagglampa_mitten
+    - sequence:
+      - delay:
+          hours: 0
+          minutes: 0
+          seconds: 0
+          milliseconds: 300
+      - service: light.turn_on
+        metadata: {}
+        data:
+          brightness_pct: 60
+          transition: 1
+        target:
+          entity_id:
+          - light.toalett_vagglampa_hoger
+  description: ''
+
+toalett_belysning_off:
+  alias: Toalett Belysning Off
+  sequence:
+  - service: light.turn_off
+    data:
+      transition: 2
+    target:
+      entity_id:
+      - light.toalett_vagglampa_mitten
+      - light.toalett_vagglampa_vanster
+      - light.toalett_vagglampa_hoger
+  description: ''
+
+grus_trip_trapp_trull:
+  alias: Grus trip trapp trull
+  sequence:
+  - sequence:
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 1
+        milliseconds: 0
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_01
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_02
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_03
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 2
+        brightness_pct: 90
+      target:
+        entity_id: light.utomhus_grus_spot_04
+  description: ''
+
+grus_av:
+  alias: Grus av
+  sequence:
+  - service: light.turn_off
+    metadata: {}
+    data: {}
+    target:
+      device_id:
+      - ea538e72060f24941b703cad160925eb
+      - c3098c8830936e38d86e1964c8ca4ff3
+      - 883bd0de4f92c6c38f0be0506f4db1b7
+      - 4b8dc1ef1f6b07a14d7384be071c6993
+  description: ''

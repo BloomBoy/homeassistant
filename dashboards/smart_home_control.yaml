@@ -1,0 +1,266 @@
+# Modern Smart Home Dashboard
+# Elegant kontroll för hela hemmet
+title: Smart Hem Kontroll
+theme: default
+path: smart-home-control
+
+views:
+  - title: Hem
+    path: home
+    icon: mdi:home
+    cards:
+      # ROW 1: Master Lighting Control (stora touch-vänliga knappar)
+      - type: vertical-stack
+        cards:
+          # Master kontroller - 3 stora knappar
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                name: Lampor PÅ
+                icon: mdi:lightbulb-group
+                color: green
+                tap_action:
+                  action: call-service
+                  service: script.master_lights_on
+                state_color: false
+
+              - type: tile
+                entity: input_boolean.master_lights
+                name: Master Toggle
+                icon: mdi:lightbulb-group-outline
+                tap_action:
+                  action: toggle
+
+              - type: tile
+                name: Lampor AV
+                icon: mdi:lightbulb-off
+                color: red
+                tap_action:
+                  action: call-service
+                  service: script.master_lights_off
+                state_color: false
+
+          # Lägesval - Större knappar för touch
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: input_boolean.cozy_mode
+                name: Mysläge
+                icon: mdi:candle
+                color: amber
+                tap_action:
+                  action: call-service
+                  service: script.activate_cozy_mode
+
+              - type: tile
+                entity: input_boolean.alert_mode
+                name: Alarm
+                icon: mdi:alert-circle
+                color: red
+                tap_action:
+                  action: call-service
+                  service: script.toggle_alert_mode
+
+              - type: tile
+                name: Avaktivera
+                icon: mdi:power-off
+                color: gray
+                tap_action:
+                  action: call-service
+                  service: script.deactivate_all_modes
+                state_color: false
+
+          # Dark Mode Toggle
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                entity: input_boolean.dark_mode
+                name: Dark Mode
+                icon: mdi:theme-light-dark
+                color: purple
+                tap_action:
+                  action: call-service
+                  service: script.toggle_dark_mode
+
+              # Tom plats för jämn layout
+              - type: tile
+                name: ""
+                icon: mdi:blank
+                color: transparent
+                state_color: false
+                tap_action:
+                  action: none
+
+              - type: tile
+                name: ""
+                icon: mdi:blank
+                color: transparent
+                state_color: false
+                tap_action:
+                  action: none
+
+          # Quick Actions för rum - Stora touch-knappar
+          - type: horizontal-stack
+            cards:
+              - type: tile
+                name: Vardagsrum
+                icon: mdi:sofa
+                color: blue
+                tap_action:
+                  action: call-service
+                  service: script.quick_living_room
+                state_color: false
+
+              - type: tile
+                name: Kök
+                icon: mdi:chef-hat
+                color: green
+                tap_action:
+                  action: call-service
+                  service: script.quick_kitchen
+                state_color: false
+
+              - type: tile
+                name: Utomhus
+                icon: mdi:outdoor-lamp
+                color: purple
+                tap_action:
+                  action: call-service
+                  service: script.quick_outdoor
+                state_color: false
+
+          # Status display - Touch-vänligt
+          - type: tile
+            entity: sensor.antal_lampor_pa
+            name: Aktiva Lampor
+            icon: mdi:lightbulb-on
+
+      # ROW 2: Status Overview - Touch-optimerad
+      - type: horizontal-stack
+        cards:
+          # Luftkvalitet Status - Stor touch-tile
+          - type: tile
+            entity: sensor.luftkvalitet_status
+            name: Luftkvalitet
+            icon: mdi:air-filter
+            tap_action:
+              action: more-info
+
+          # Energi - Förenkla för touch
+          - type: tile
+            entity: sensor.aktuell_elforbrukning
+            name: Energi
+            icon: mdi:lightning-bolt
+            tap_action:
+              action: more-info
+
+          # Elpris - Touch-vänlig
+          - type: tile
+            entity: sensor.elpris_nu
+            name: Elpris
+            icon: mdi:currency-sek
+            tap_action:
+              action: more-info
+
+      # ROW 3: Temperaturer och System
+      - type: horizontal-stack
+        cards:
+          # Temperaturer
+          - type: vertical-stack
+            cards:
+              - type: tile
+                entity: sensor.genomsnittlig_inomhustemperatur
+                name: Inomhus
+                icon: mdi:home-thermometer
+                color: blue
+
+              - type: tile
+                entity: sensor.utomhustemperatur
+                name: Utomhus
+                icon: mdi:thermometer
+                color:
+                  - blue
+
+              - type: tile
+                entity: sensor.varmepump_status
+                name: Värmepump
+                icon: mdi:heat-pump
+
+          # Media och System
+          - type: vertical-stack
+            cards:
+              # Media Player Control (om det finns en aktiv)
+              - type: media-control
+                entity: media_player.vardagsrum_tv
+                name: Media
+
+              # System Status
+              - type: entities
+                title: Systemstatus
+                entities:
+                  - entity: sensor.antal_lampor_pa
+                    name: Aktiva Lampor
+                  - entity: input_boolean.lighting_automation
+                    name: Automation
+                show_header_toggle: false
+
+      # ROW 4: Snabba Kontroller
+      - type: horizontal-stack
+        cards:
+          # Scenes och Scripts
+          - type: vertical-stack
+            title: Snabbval
+            cards:
+              - type: button
+                name: Alla Av
+                icon: mdi:power-off
+                tap_action:
+                  action: call-service
+                  service: script.master_lights_off
+                hold_action:
+                  action: call-service
+                  service: script.deactivate_all_modes
+
+              - type: entities
+                entities:
+                  - scene.toalett_standardbelysning
+                  - scene.vardagsrum_tv_pa
+                  - script.grus_trip_trapp_trull
+                show_header_toggle: false
+
+          # Inställningar
+          - type: vertical-stack
+            title: Inställningar
+            cards:
+              - type: entities
+                entities:
+                  - entity: input_number.cozy_brightness
+                    name: Mysläge Ljusstyrka
+                  - entity: input_number.cozy_temperature
+                    name: Mysläge Färgtemp
+                  - entity: input_number.fade_duration
+                    name: Fade-in tid
+                show_header_toggle: false
+
+  # ANDRA VYER (för framtida expansion)
+  - title: Rum
+    path: rooms
+    icon: mdi:floor-plan
+    cards:
+      - type: markdown
+        content: |
+          ## Rumsspecifika kontroller
+          *Kommer snart...*
+
+  - title: Inställningar
+    path: settings
+    icon: mdi:cog
+    cards:
+      - type: entities
+        title: Dashboard Inställningar
+        entities:
+          - input_boolean.lighting_automation
+          - input_number.cozy_brightness
+          - input_number.cozy_temperature
+          - input_number.alert_brightness
+          - input_number.fade_duration

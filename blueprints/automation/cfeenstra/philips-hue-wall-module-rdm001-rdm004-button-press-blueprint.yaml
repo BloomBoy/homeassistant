@@ -1,0 +1,242 @@
+blueprint:
+  name: Philips Hue Wall Module
+  description: "# Philips Hue Wall Module (RDM001 / RDM004)\nThis blueprint allows
+    you to use a Philips Wall Module (RDM001 and RDM004) to trigger automations.\n
+    You need to have the module paired to your Home Assistant Zigbee integration (ZHA).
+    Depending on the physical switch used (single/double and rocker/push). More information
+    on how to do this can be found [here](https://rudd-o.com/linux-and-free-software/how-to-use-the-philips-hue-wall-switch-module-with-push-button-wall-switches-in-home-assistant).
+    If you have a RDM004 module and the 'PhilipsBasicCluster' option is not shown,
+    follow the steps layed out [here](https://community.home-assistant.io/t/how-to-configure-the-philips-hue-wall-module-to-use-push-button-momentary-type-wall-switches-zha/451125/27).\n\n
+    This blueprint supports the left and right button, single, double, triple, quadruple,
+    long press and long press release events. "
+  domain: automation
+  input:
+    remote:
+      name: Remote
+      description: Signify switch to use
+      selector:
+        device:
+          filter:
+          - integration: zha
+            manufacturer: Signify Netherlands B.V.
+            model: RDM001
+          - integration: zha
+            manufacturer: Signify Netherlands B.V.
+            model: RDM004
+          multiple: false
+    button_left_single_press:
+      name: Left button single press
+      description: Action to run on a single press of the left button
+      default: []
+      selector:
+        action: {}
+    button_left_double_press:
+      name: Left button double press
+      description: Action to run on a double press of the left button
+      default: []
+      selector:
+        action: {}
+    button_left_triple_press:
+      name: Left button triple press
+      description: Action to run on a triple press of the left button
+      default: []
+      selector:
+        action: {}
+    button_left_quadruple_press:
+      name: Left button quadruple press
+      description: Action to run on a quadruple press of the left button
+      default: []
+      selector:
+        action: {}
+    button_left_long_press:
+      name: Left button hold
+      description: Action to run on a long press of the left button
+      default: []
+      selector:
+        action: {}
+    button_left_long_release:
+      name: Left button release
+      description: Action to run when releasing the left button after a long press
+      default: []
+      selector:
+        action: {}
+    button_right_single_press:
+      name: Right button single press
+      description: Action to run on a single press of the right button
+      default: []
+      selector:
+        action: {}
+    button_right_double_press:
+      name: Right button double press
+      description: Action to run on a double press of the right button
+      default: []
+      selector:
+        action: {}
+    button_right_triple_press:
+      name: Right button triple press
+      description: Action to run on a triple press of the right button
+      default: []
+      selector:
+        action: {}
+    button_right_quadruple_press:
+      name: Right button quadruple press
+      description: Action to run on a quadruple press of the right button
+      default: []
+      selector:
+        action: {}
+    button_right_long_press:
+      name: Right button hold
+      description: Action to run on a long press of the right button
+      default: []
+      selector:
+        action: {}
+    button_right_long_release:
+      name: Right button release
+      description: Action to run when releasing the right button after a long press
+      default: []
+      selector:
+        action: {}
+  source_url: https://community.home-assistant.io/t/philips-hue-wall-module-rdm001-rdm004-button-press-blueprint/745455
+mode: single
+trigger:
+- platform: event
+  event_type: zha_event
+  event_data:
+    device_id: !input remote
+action:
+- variables:
+    command: '{{ trigger.event.data.command }}'
+    cluster_id: '{{ trigger.event.data.cluster_id }}'
+    endpoint_id: '{{ trigger.event.data.endpoint_id }}'
+    args: '{{ trigger.event.data.args }}'
+- choose:
+  - conditions:
+    - '{{ command == ''left_press_release''}}'
+    sequence:
+    - wait_for_trigger:
+      - platform: event
+        event_type: zha_event
+        event_data:
+          device_id: !input remote
+          command: '{{ command }}'
+      timeout:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+      enabled: true
+    - if:
+      - condition: template
+        value_template: '{{ not wait.trigger }}'
+      then: !input button_left_single_press
+      else:
+      - sequence:
+        - wait_for_trigger:
+          - platform: event
+            event_type: zha_event
+            event_data:
+              device_id: !input remote
+              command: '{{ command }}'
+          timeout:
+            hours: 0
+            minutes: 0
+            seconds: 0
+            milliseconds: 500
+        - if:
+          - condition: template
+            value_template: '{{ not wait.trigger }}'
+          then: !input button_left_double_press
+          else:
+          - sequence:
+            - wait_for_trigger:
+              - platform: event
+                event_type: zha_event
+                event_data:
+                  device_id: !input remote
+                  command: '{{ command }}'
+              timeout:
+                hours: 0
+                minutes: 0
+                seconds: 0
+                milliseconds: 500
+            - if:
+              - condition: template
+                value_template: '{{ not wait.trigger }}'
+              then: !input button_left_triple_press
+              else: !input button_left_quadruple_press
+  - conditions:
+    - '{{ command == ''right_press_release''}}'
+    sequence:
+    - wait_for_trigger:
+      - platform: event
+        event_type: zha_event
+        event_data:
+          device_id: !input remote
+          command: '{{ command }}'
+      timeout:
+        hours: 0
+        minutes: 0
+        seconds: 0
+        milliseconds: 500
+      enabled: true
+    - if:
+      - condition: template
+        value_template: '{{ not wait.trigger }}'
+      then: !input button_right_single_press
+      else:
+      - sequence:
+        - wait_for_trigger:
+          - platform: event
+            event_type: zha_event
+            event_data:
+              device_id: !input remote
+              command: '{{ command }}'
+          timeout:
+            hours: 0
+            minutes: 0
+            seconds: 0
+            milliseconds: 500
+        - if:
+          - condition: template
+            value_template: '{{ not wait.trigger }}'
+          then: !input button_right_double_press
+          else:
+          - sequence:
+            - wait_for_trigger:
+              - platform: event
+                event_type: zha_event
+                event_data:
+                  device_id: !input remote
+                  command: '{{ command }}'
+              timeout:
+                hours: 0
+                minutes: 0
+                seconds: 0
+                milliseconds: 500
+            - if:
+              - condition: template
+                value_template: '{{ not wait.trigger }}'
+              then: !input button_right_triple_press
+              else: !input button_right_quadruple_press
+  - conditions:
+    - '{{ command == ''left_hold''}}'
+    sequence:
+    - sequence: !input button_left_long_press
+    - wait_for_trigger:
+      - platform: event
+        event_type: zha_event
+        event_data:
+          device_id: !input remote
+          command: left_hold_release
+    - sequence: !input button_left_long_release
+  - conditions:
+    - '{{ command == ''right_hold''}}'
+    sequence:
+    - sequence: !input button_right_long_press
+    - wait_for_trigger:
+      - platform: event
+        event_type: zha_event
+        event_data:
+          device_id: !input remote
+          command: right_hold_release
+    - sequence: !input button_right_long_release

@@ -1,0 +1,4 @@
+# Lighting input_boolean helpers
+motion_lights:
+  name: "Motion Lights Enabled"
+  icon: mdi:motion-sensor

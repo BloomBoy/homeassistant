@@ -1,0 +1,89 @@
+- id: '1722963865251'
+  alias: set_sens_vibration_kok
+  description: ''
+  use_blueprint:
+    path: niro1987/zha_aqara_vibration_set_sensitivity.yaml
+    input:
+      device: 99346472330483d874da6ed7d304a6ff
+      sensitivity: High
+
+- id: '1722963899251'
+  alias: vilket_lights_of_120_sec
+  description: ''
+  sequence:
+  - service: light.turn_off
+    metadata: {}
+    data:
+      transition: 20
+    target:
+      area_id: sovrum
+
+- id: '1721763976731'
+  alias: vilmer_light_red_flash
+  description: ''
+  sequence:
+  - sequence:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        flash: short
+        rgb_color:
+        - 255
+        - 0
+        - 0
+        transition: 1
+      target:
+        entity_id: light.extra_taklampa_01
+    - delay:
+        hours: 0
+        minutes: 0
+        seconds: 3
+        milliseconds: 0
+    - action: light.turn_on
+      metadata: {}
+      data:
+        kelvin: 2000
+        transition: 3
+      target:
+        entity_id: light.extra_taklampa_01
+
+- id: '1721763976731'
+  alias: light_of_vilmer_check
+  description: ''
+  sequence:
+  - if:
+    - condition: time
+      weekday:
+      - fri
+      - thu
+      - wed
+      - tue
+      - mon
+      after: '19:30:00'
+    - condition: state
+      entity_id: light.extra_taklampa_01
+      state: 'on'
+    then:
+    - choose:
+      - conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: sensor.pixel_7_battery_state
+            state: charging
+        sequence:
+        - action: script.vilmer_light_red_flash
+          metadata: {}
+          data: {}
+        - stop: Telefonen laddar inte
+      - conditions:
+        - condition: not
+          conditions:
+          - condition: state
+            entity_id: binary_sensor.pixel_7_alarm_withiing_next_105h
+            state: 'on'
+        sequence:
+        - action: script.vilmer_light_red_flash
+          metadata: {}
+          data: {}
+        - stop: Telefonen laddar inte

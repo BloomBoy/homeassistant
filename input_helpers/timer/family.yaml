@@ -1,0 +1,5 @@
+# Family timer helpers
+middag_nedrakning:
+  name: "Dinner Countdown"
+  duration: "00:30:00"  # 30 minutes
+  icon: mdi:timer

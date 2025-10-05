@@ -1,0 +1,1729 @@
+# Rounded Dashboard - Inspired by LE0N's Design
+# Modern, minimalist dashboard with bottom navigation
+
+title: Rounded Dashboard
+theme: Rounded
+path: rounded-home
+icon: mdi:home-modern
+
+# Button card templates för konsistent design
+button_card_templates:
+  base:
+    tap_action:
+      action: none
+    show_icon: true
+    show_name: true
+    styles:
+      card:
+        - border-radius: 12px
+        - box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1)
+        - border: none
+      name:
+        - font-weight: 500
+        - font-size: 14px
+        - color: var(--primary-text-color)
+      icon:
+        - color: var(--primary-color)
+
+  navigation_button:
+    template: base
+    size: 60px
+    styles:
+      card:
+        - height: 80px
+        - border-radius: 20px
+        - background: var(--secondary-background-color)
+        - border: none
+        - box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1)
+      icon:
+        - color: var(--primary-color)
+        - margin-bottom: 5px
+      name:
+        - font-size: 12px
+        - font-weight: 500
+        - margin-top: 0px
+
+  room_button:
+    template: base
+    size: 40px
+    styles:
+      card:
+        - height: 120px
+        - border-radius: 16px
+        - background: linear-gradient(135deg, var(--primary-color) 0%, rgba(95, 155, 234, 0.8) 100%)
+        - color: white
+        - border: none
+        - box-shadow: 0 4px 12px 0 rgba(95, 155, 234, 0.3)
+      icon:
+        - color: white
+        - margin-bottom: 8px
+      name:
+        - color: white
+        - font-weight: 600
+        - font-size: 16px
+
+
+  # Status card för non-light entities
+  status_card:
+    template: base
+    size: 30px
+    styles:
+      card:
+        - height: 100px
+        - border-radius: 16px
+        - background: var(--secondary-background-color)
+        - border: none
+        - box-shadow: 0 2px 8px 0 rgba(0,0,0,0.1)
+      icon:
+        - margin-bottom: 8px
+      name:
+        - font-size: 14px
+        - font-weight: 500
+
+views:
+  # HOME VIEW - Huvudsida
+  - title: Hem
+    path: home
+    icon: mdi:home
+    panel: false
+    cards:
+      # Status Overview - Övre rad
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            template: status_card
+            entity: sensor.genomsnittlig_inomhustemperatur
+            name: Inomhus
+            icon: mdi:home-thermometer
+            show_state: true
+            styles:
+              state:
+                - font-size: 20px
+                - font-weight: 600
+                - color: var(--primary-color)
+                - margin-top: 5px
+
+          - type: custom:button-card
+            template: status_card
+            entity: sensor.antal_lampor_pa
+            name: Lampor på
+            icon: mdi:lightbulb-on
+            show_state: true
+            styles:
+              state:
+                - font-size: 20px
+                - font-weight: 600
+                - color: var(--accent-color)
+                - margin-top: 5px
+
+          - type: custom:button-card
+            template: status_card
+            entity: sensor.luftkvalitet_status
+            name: Luftkvalitet
+            icon: mdi:air-filter
+            show_state: true
+            styles:
+              state:
+                - font-size: 14px
+                - font-weight: 600
+                - color: var(--google-green-500)
+                - margin-top: 5px
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Quick Controls - Snabbkontroller
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            template: base
+            tap_action:
+              action: call-service
+              service: script.master_lights_on
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+                - border: none
+                - box-shadow: 0 3px 10px 0 rgba(57, 229, 129, 0.3)
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            template: base
+            tap_action:
+              action: call-service
+              service: script.master_lights_off
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+                - border: none
+                - box-shadow: 0 3px 10px 0 rgba(228, 94, 101, 0.3)
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 30
+
+      # Room Navigation - Rumsknappar
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+      # Andra raden rum
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Badrum
+            icon: mdi:shower
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/badrum
+
+      # Tredje raden rum
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Hall
+            icon: mdi:coat-rack
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/hall
+
+          - type: custom:button-card
+            name: Matsal
+            icon: mdi:table-chair
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/matsal
+
+      # Fjärde raden rum
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Arbetsrum
+            icon: mdi:desk
+            template: room_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/arbetsrum
+
+          - type: custom:button-card
+            name: Utomhus
+            icon: mdi:tree
+            template: room_button
+            styles:
+              card:
+                - background: linear-gradient(135deg, var(--google-green-500) 0%, rgba(57, 229, 129, 0.8) 100%)
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/utomhus
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation Bar - Fast position
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+            styles:
+              card:
+                - background: var(--primary-color)
+              icon:
+                - color: white
+              name:
+                - color: white
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Inställningar
+            icon: mdi:cog
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/installningar
+
+  # VARDAGSRUM VIEW
+  - title: Vardagsrum
+    path: vardagsrum
+    icon: mdi:sofa
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Vardagsrum
+        icon: mdi:sofa
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--primary-color) 0%, rgba(95, 155, 234, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Room controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: group.living_room_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id: group.living_room_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # WiZ lampor
+      - type: custom:button-card
+        name: WiZ Lampor
+        icon: mdi:lightbulb-multiple
+        template: base
+        styles:
+          card:
+            - background: var(--secondary-background-color)
+            - border-radius: 12px
+            - padding: 8px
+            - margin-bottom: 10px
+          name:
+            - font-size: 18px
+            - font-weight: 600
+            - color: var(--primary-text-color)
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: WiZ 1
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_01
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_01
+                  colorMode: brightness
+
+          - type: custom:button-card
+            name: WiZ 2
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_02
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_02
+                  colorMode: brightness
+
+          - type: custom:button-card
+            name: WiZ 3
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_03
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_03
+                  colorMode: brightness
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: WiZ 4
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_04
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_04
+                  colorMode: brightness
+
+          - type: custom:button-card
+            name: WiZ 5
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_05
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_05
+                  colorMode: brightness
+
+          - type: custom:button-card
+            name: WiZ 6
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_wiz_06
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: light.vardagsrum_wiz_06
+                  colorMode: brightness
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Övriga lampor
+      - type: custom:button-card
+        name: Övriga Lampor
+        icon: mdi:lamp
+        template: base
+        styles:
+          card:
+            - background: var(--secondary-background-color)
+            - border-radius: 12px
+            - padding: 8px
+            - margin-bottom: 10px
+          name:
+            - font-size: 18px
+            - font-weight: 600
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_treudd_mitt
+            name: Treudd Mitt
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_treudd_vanster
+            name: Treudd Vänster
+            template: colored_light_card
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_tv_vanster
+            name: TV Vänster
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vardagsrum_tv_hoger
+            name: TV Höger
+            template: colored_light_card
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation (samma på alla sidor)
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+            styles:
+              card:
+                - background: var(--primary-color)
+              icon:
+                - color: white
+              name:
+                - color: white
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Inställningar
+            icon: mdi:cog
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/installningar
+
+  # KÖK VIEW
+  - title: Kök
+    path: kok
+    icon: mdi:chef-hat
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Kök
+        icon: mdi:chef-hat
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--google-orange-500) 0%, rgba(255, 152, 0, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Room controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: group.kitchen_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id: group.kitchen_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Kökslampor
+      - type: custom:button-card
+        name: Köksbelysning
+        icon: mdi:lightbulb-multiple
+        template: base
+        styles:
+          card:
+            - background: var(--secondary-background-color)
+            - border-radius: 12px
+            - padding: 8px
+            - margin-bottom: 10px
+          name:
+            - font-size: 18px
+            - font-weight: 600
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.kok_bordslampa
+            name: Bordslampa
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.koksbank_vanster_lampa
+            name: Köksbänk Vänster
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.koksbank_mitten_lampa_3
+            name: Köksbänk Mitten
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.koksbank_hoger_lampa_2
+            name: Köksbänk Höger
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+            styles:
+              card:
+                - background: var(--google-orange-500)
+              icon:
+                - color: white
+              name:
+                - color: white
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Inställningar
+            icon: mdi:cog
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/installningar
+
+  # SOVRUM VIEW
+  - title: Sovrum
+    path: sovrum
+    icon: mdi:bed
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Sovrum
+        icon: mdi:bed
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--accent-color) 0%, rgba(228, 94, 101, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Room controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id:
+                  - light.tak_mksovrum
+                  - light.vilmer_sanglampa
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id:
+                  - light.tak_mksovrum
+                  - light.vilmer_sanglampa
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Sovrumslampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.tak_mksovrum
+            name: Taklampa
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vilmer_sanglampa
+            name: Sänglampa
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+            styles:
+              card:
+                - background: var(--accent-color)
+              icon:
+                - color: white
+              name:
+                - color: white
+
+          - type: custom:button-card
+            name: Inställningar
+            icon: mdi:cog
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/installningar
+
+  # BADRUM VIEW
+  - title: Badrum
+    path: badrum
+    icon: mdi:shower
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Badrum
+        icon: mdi:shower
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--primary-color) 0%, rgba(95, 155, 234, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Room controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id:
+                  - light.toalett_vagglampa_hoger
+                  - light.toalett_vagglampa_mitten
+                  - light.toalett_vagglampa_vanster
+                  - light.vagglampor_toalett
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id:
+                  - light.toalett_vagglampa_hoger
+                  - light.toalett_vagglampa_mitten
+                  - light.toalett_vagglampa_vanster
+                  - light.vagglampor_toalett
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Badrumslampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.toalett_vagglampa_vanster
+            name: Vägg Vänster
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.toalett_vagglampa_mitten
+            name: Vägg Mitten
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.toalett_vagglampa_hoger
+            name: Vägg Höger
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.vagglampor_toalett
+            name: Vägglampor
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Inställningar
+            icon: mdi:cog
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/installningar
+
+  # UTOMHUS VIEW
+  - title: Utomhus
+    path: utomhus
+    icon: mdi:tree
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Utomhus
+        icon: mdi:tree
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--google-green-500) 0%, rgba(57, 229, 129, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Room controls
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            name: Alla På
+            icon: mdi:lightbulb-group
+            tap_action:
+              action: call-service
+              service: light.turn_on
+              service_data:
+                entity_id: group.outdoor_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--google-green-500)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+          - type: custom:button-card
+            name: Alla Av
+            icon: mdi:lightbulb-off
+            tap_action:
+              action: call-service
+              service: light.turn_off
+              service_data:
+                entity_id: group.outdoor_lights
+            styles:
+              card:
+                - height: 60px
+                - border-radius: 16px
+                - background: var(--accent-color)
+                - color: white
+              icon:
+                - color: white
+              name:
+                - color: white
+                - font-weight: 600
+
+      # Spacing
+      - type: custom:gap-card
+        height: 20
+
+      # Spots
+      - type: custom:button-card
+        name: Trädgårdsspots
+        icon: mdi:spotlight-beam
+        template: base
+        styles:
+          card:
+            - background: var(--secondary-background-color)
+            - border-radius: 12px
+            - padding: 8px
+            - margin-bottom: 10px
+          name:
+            - font-size: 18px
+            - font-weight: 600
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_stenhuvud_spot
+            name: Stenhuvud
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_kaprifol_spot
+            name: Kaprifol
+            template: colored_light_card
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_kastanj_spot
+            name: Kastanj
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_appeltrad_spot
+            name: Äppelträd
+            template: colored_light_card
+
+      # Grus spots
+      - type: custom:button-card
+        name: Grusspots
+        icon: mdi:circle-multiple
+        template: base
+        styles:
+          card:
+            - background: var(--secondary-background-color)
+            - border-radius: 12px
+            - padding: 8px
+            - margin-bottom: 10px
+          name:
+            - font-size: 18px
+            - font-weight: 600
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_grus_spot_01
+            name: Grus 1
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_grus_spot_02
+            name: Grus 2
+            template: colored_light_card
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_grus_spot_03
+            name: Grus 3
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_grus_spot_04
+            name: Grus 4
+            template: colored_light_card
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_grus_spot_05
+            name: Grus 5
+            template: colored_light_card
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_flaggstang_spot
+            name: Flaggstång
+            template: colored_light_card
+
+      # Övriga utomhuslampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_ytterdorr
+            name: Ytterdörr
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.utomhus_fasad_strip
+            name: Fasad Strip
+            tap_action:
+              action: toggle
+              haptic: medium
+            hold_action:
+              action: more-info
+              haptic: medium
+            custom_fields:
+              slider:
+                card:
+                  type: custom:my-slider-v2
+                  entity: "[[[ return entity.entity_id ]]]"
+                  colorMode: brightness
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+      # Bottom Navigation
+      - type: horizontal-stack
+        view_layout:
+          position: fixed
+          bottom: 20px
+          left: 20px
+          right: 20px
+          z-index: 999
+        cards:
+          - type: custom:button-card
+            name: Hem
+            icon: mdi:home
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/home
+
+          - type: custom:button-card
+            name: Vardagsrum
+            icon: mdi:sofa
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/vardagsrum
+
+          - type: custom:button-card
+            name: Kök
+            icon: mdi:chef-hat
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/kok
+
+          - type: custom:button-card
+            name: Sovrum
+            icon: mdi:bed
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/sovrum
+
+          - type: custom:button-card
+            name: Utomhus
+            icon: mdi:tree
+            template: navigation_button
+            tap_action:
+              action: navigate
+              navigation_path: /rounded-dashboard/utomhus
+            styles:
+              card:
+                - background: var(--google-green-500)
+              icon:
+                - color: white
+              name:
+                - color: white
+
+  # HALL VIEW
+  - title: Hall
+    path: hall
+    icon: mdi:coat-rack
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Hall
+        icon: mdi:coat-rack
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--google-grey-500) 0%, rgba(114, 114, 114, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Hallampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.hall_huvudtaklampa
+            name: Huvudtak
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.hall_byra_belysning
+            name: Byrå
+            template: status_card
+            tap_action:
+              action: toggle
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.hall_kapprum_strip
+            name: Kapprum
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.hall_stadskrubb_strip
+            name: Städskrubb
+            template: status_card
+            tap_action:
+              action: toggle
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+  # MATSAL VIEW
+  - title: Matsal
+    path: matsal
+    icon: mdi:table-chair
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Matsal
+        icon: mdi:table-chair
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--primary-color) 0%, rgba(95, 155, 234, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Matsalslampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.matsal_tvaudd_vanster
+            name: Tvåudd Vänster
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.matsal_tvaudd_hoger
+            name: Tvåudd Höger
+            template: status_card
+            tap_action:
+              action: toggle
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.matsal_sidobord
+            name: Sidobord
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.matsal
+            name: Matsal
+            template: status_card
+            tap_action:
+              action: toggle
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+  # ARBETSRUM VIEW
+  - title: Arbetsrum
+    path: arbetsrum
+    icon: mdi:desk
+    panel: false
+    cards:
+      # Room header
+      - type: custom:button-card
+        name: Arbetsrum
+        icon: mdi:desk
+        template: base
+        tap_action:
+          action: none
+        styles:
+          card:
+            - height: 80px
+            - background: linear-gradient(135deg, var(--google-blue-500) 0%, rgba(95, 155, 234, 0.8) 100%)
+            - color: white
+            - border: none
+            - border-radius: 20px
+            - margin-bottom: 20px
+          icon:
+            - color: white
+            - size: 40px
+          name:
+            - color: white
+            - font-size: 24px
+            - font-weight: 600
+
+      # Arbetsrumslampor
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.arbetsrum_taklampa
+            name: Taklampa
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.arbetsrum_myslampa
+            name: Myslampa
+            template: status_card
+            tap_action:
+              action: toggle
+
+      - type: horizontal-stack
+        cards:
+          - type: custom:button-card
+            icon: mdi:lightbulb
+            entity: light.arbetsrum
+            name: Arbetsrum
+            template: status_card
+            tap_action:
+              action: toggle
+
+          - type: custom:button-card
+            name: ""
+            template: status_card
+            tap_action:
+              action: none
+            styles:
+              card:
+                - opacity: 0
+
+      # Spacing för bottom navigation
+      - type: custom:gap-card
+        height: 100
+
+  # INSTÄLLNINGAR VIEW
+  - title: Inställningar
+    path: installningar
+    icon: mdi:cog
+    cards:
+      - type: markdown
+        content: "## ⚙️ Inställningar - Under utveckling"

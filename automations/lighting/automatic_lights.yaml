@@ -1,0 +1,448 @@
+- id: '1721766277220'
+  alias: Chromecast based Lights
+  description: ''
+  trigger:
+  - platform: device
+    type: changed_states
+    device_id: 7fc225d5e642875d3560ef70291903d0
+    entity_id: 5ce069cb0e167562da2cd20926f5de46
+    domain: media_player
+  - platform: device
+    device_id: 7fc225d5e642875d3560ef70291903d0
+    domain: media_player
+    entity_id: 5ce069cb0e167562da2cd20926f5de46
+    type: buffering
+  - platform: device
+    device_id: 7fc225d5e642875d3560ef70291903d0
+    domain: media_player
+    entity_id: 5ce069cb0e167562da2cd20926f5de46
+    type: idle
+  - platform: device
+    device_id: 7fc225d5e642875d3560ef70291903d0
+    domain: media_player
+    entity_id: 5ce069cb0e167562da2cd20926f5de46
+    type: paused
+  - platform: device
+    device_id: 7fc225d5e642875d3560ef70291903d0
+    domain: media_player
+    entity_id: 5ce069cb0e167562da2cd20926f5de46
+    type: playing
+  condition:
+  - condition: sun
+    after: sunset
+    after_offset: -00:30:00
+  action:
+  - choose:
+    - conditions:
+      - condition: or
+        conditions:
+        - condition: device
+          device_id: 7fc225d5e642875d3560ef70291903d0
+          domain: media_player
+          entity_id: 5ce069cb0e167562da2cd20926f5de46
+          type: is_buffering
+        - condition: device
+          device_id: 7fc225d5e642875d3560ef70291903d0
+          domain: media_player
+          entity_id: 5ce069cb0e167562da2cd20926f5de46
+          type: is_playing
+      sequence:
+      - service: scene.turn_on
+        target:
+          entity_id: scene.vardagsrum_tv_on
+        data:
+          transition: 3
+    - conditions:
+      - condition: not
+        conditions:
+        - condition: device
+          device_id: 7fc225d5e642875d3560ef70291903d0
+          domain: media_player
+          entity_id: 5ce069cb0e167562da2cd20926f5de46
+          type: is_playing
+        - condition: device
+          device_id: 7fc225d5e642875d3560ef70291903d0
+          domain: media_player
+          entity_id: 5ce069cb0e167562da2cd20926f5de46
+          type: is_buffering
+      - condition: state
+        entity_id: light.vardagsrum_tv_hoger
+        state: 'on'
+      - condition: state
+        entity_id: light.vardagsrum_tv_vanster
+        state: 'on'
+      sequence:
+      - service: scene.turn_on
+        data:
+          transition: 3
+        target:
+          entity_id: scene.vardagsrum_tv_iff
+  mode: single
+
+- id: '1722952065251'
+  alias: Vilmers Sovrum - Lampa ease on based on alarm
+  description: ''
+  triggers:
+  - at: 07:02:00
+    trigger: time
+  conditions:
+  - condition: zone
+    entity_id: device_tracker.pixel_7
+    zone: zone.home
+  actions:
+  - metadata: {}
+    data:
+      brightness_pct: 1
+    target:
+      entity_id: light.vilmer_sanglampa
+    action: light.turn_on
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 2
+      milliseconds: 0
+  - parallel:
+    - metadata: {}
+      data:
+        kelvin: 2117
+        brightness_pct: 75
+        transition: 900
+      target:
+        entity_id: light.vilmer_sanglampa
+      action: light.turn_on
+    - sequence:
+      - delay:
+          hours: 0
+          minutes: 15
+          seconds: 0
+          milliseconds: 0
+      - metadata: {}
+        data:
+          brightness_pct: 100
+          kelvin: 2000
+        target:
+          entity_id: light.extra_taklampa_01
+        action: light.turn_on
+  mode: single
+
+- id: '1733236441640'
+  alias: Motion lights brightness helper updater
+  description: Uppdaterar helpern som ansvarar för motion lights ljusstyrka vid påslagning
+  trigger:
+  - platform: time
+    at: 07:00:00
+    id: morgon
+  - platform: time
+    at: '23:00:00'
+    id: kväll
+  condition: []
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - morgon
+      sequence:
+      - service: input_number.set_value
+        metadata: {}
+        data:
+          value: 80
+        target:
+          entity_id: input_number.motion_lights_brightness
+    - conditions:
+      - condition: trigger
+        id:
+        - kväll
+      sequence:
+      - service: input_number.set_value
+        metadata: {}
+        data:
+          value: 15
+        target:
+          entity_id: input_number.motion_lights_brightness
+  mode: single
+
+- id: '1750197714092'
+  alias: AirGradient brightness time
+  description: ''
+  triggers:
+  - trigger: time
+    at: '20:00:01'
+    id: '2000'
+  - trigger: time
+    at: 07:30:00
+    id: '0730'
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - '2000'
+      sequence:
+      - device_id: 6b68e2edcd5d37267daa9a579ae7e173
+        domain: number
+        entity_id: e2226c22b7314c93bca88aa3c2a35c44
+        type: set_value
+        value: 3
+      - device_id: 6b68e2edcd5d37267daa9a579ae7e173
+        domain: number
+        entity_id: bd8cbcfa763ff77360529f4695bf8a72
+        type: set_value
+        value: 0
+      - device_id: 93d192a219cbdcd304f33650191b1faf
+        domain: number
+        entity_id: 15cc30e86e81206180a407742922e77f
+        type: set_value
+        value: 0
+      - device_id: 93d192a219cbdcd304f33650191b1faf
+        domain: number
+        entity_id: 5e4ed13362cc8b97a1d701484c9a5b23
+        type: set_value
+        value: 3
+    - conditions:
+      - condition: trigger
+        id:
+        - '0730'
+      sequence:
+      - device_id: 6b68e2edcd5d37267daa9a579ae7e173
+        domain: number
+        entity_id: e2226c22b7314c93bca88aa3c2a35c44
+        type: set_value
+        value: 90
+      - device_id: 6b68e2edcd5d37267daa9a579ae7e173
+        domain: number
+        entity_id: bd8cbcfa763ff77360529f4695bf8a72
+        type: set_value
+        value: 90
+      - device_id: 93d192a219cbdcd304f33650191b1faf
+        domain: number
+        entity_id: 5e4ed13362cc8b97a1d701484c9a5b23
+        type: set_value
+        value: 100
+      - device_id: 93d192a219cbdcd304f33650191b1faf
+        domain: number
+        entity_id: 15cc30e86e81206180a407742922e77f
+        type: set_value
+        value: 100
+  mode: single
+
+- id: '1748452903674'
+  alias: Utebelysning
+  description: ''
+  triggers:
+  - trigger: numeric_state
+    entity_id:
+    - sensor.grind_ljusstyrka
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+    below: 25
+    id: lux_low_for_5
+  - trigger: numeric_state
+    entity_id:
+    - sensor.grind_ljusstyrka
+    above: 25
+    id: light_above
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  - trigger: state
+    entity_id:
+    - binary_sensor.grind_narvaro
+    to: 'on'
+    id: sensor_detect
+  conditions: []
+  actions:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - lux_low_for_5
+      sequence:
+      - action: light.turn_on
+        metadata: {}
+        data:
+          transition: 10
+          brightness_pct: 30
+          color_temp_kelvin: 2000
+        target:
+          entity_id:
+          - light.utomhus_grus_spot_01
+          - light.utomhus_grus_spot_02
+          - light.utomhus_grus_spot_03
+          - light.utomhus_grus_spot_04
+          - light.utomhus_stenhuvud_spot
+      - action: light.turn_on
+        metadata: {}
+        data:
+          transition: 10
+          color_temp_kelvin: 2000
+          brightness_pct: 80
+        target:
+          device_id:
+          - d7d5c2679fa83516f915aa0fb6935054
+          - 890ab9c4c9ecd187cef82d58d8f1e419
+          - 8b6ecba5e642374449a2dd2ba4742652
+          - f0355a3bccd03aad584f7d4137b75665
+          - aee793d5c29308343b361cfaf746f298
+          - 8ecc8943d3d4958ec7bd503b5875b3e6
+    - conditions:
+      - condition: trigger
+        id:
+        - sensor_detect
+      - condition: numeric_state
+        entity_id: sensor.grind_ljusstyrka
+        below: 40
+      sequence:
+      - sequence:
+        - action: script.grus_trip_trapp_trull
+          data: {}
+        - action: light.turn_on
+          metadata: {}
+          data:
+            color_temp_kelvin: 2379
+            transition: 2
+            brightness_pct: 100
+          target:
+            entity_id: light.utomhus_stenhuvud_spot
+        - wait_for_trigger:
+          - trigger: state
+            entity_id:
+            - binary_sensor.grind_narvaro
+            to: 'off'
+          continue_on_timeout: true
+        - delay:
+            hours: 0
+            minutes: 2
+            seconds: 0
+            milliseconds: 0
+        - if:
+          - condition: numeric_state
+            entity_id: sensor.grind_ljusstyrka
+            below: 25
+          then:
+          - action: light.turn_on
+            metadata: {}
+            data:
+              transition: 2
+              brightness_pct: 30
+            target:
+              entity_id:
+              - light.utomhus_grus_spot_01
+              - light.utomhus_grus_spot_02
+              - light.utomhus_grus_spot_03
+              - light.utomhus_grus_spot_04
+              - light.utomhus_stenhuvud_spot
+          else:
+          - action: light.turn_off
+            metadata: {}
+            data:
+              transition: 5
+            target:
+              entity_id:
+              - light.utomhus_grus_spot_01
+              - light.utomhus_grus_spot_02
+              - light.utomhus_grus_spot_03
+              - light.utomhus_grus_spot_04
+              - light.utomhus_stenhuvud_spot
+    - conditions:
+      - condition: trigger
+        id:
+        - light_above
+      sequence:
+      - action: light.turn_off
+        metadata: {}
+        data:
+          transition: 2
+        target:
+          device_id:
+          - 046e553f93848f0af3f6e768a139a779
+          - ea538e72060f24941b703cad160925eb
+          - cd91d958abb7696190b32149d2f7d349
+          - d7d5c2679fa83516f915aa0fb6935054
+          - c3098c8830936e38d86e1964c8ca4ff3
+          - 883bd0de4f92c6c38f0be0506f4db1b7
+          - 890ab9c4c9ecd187cef82d58d8f1e419
+          - 4b8dc1ef1f6b07a14d7384be071c6993
+          - 8b6ecba5e642374449a2dd2ba4742652
+          - f0355a3bccd03aad584f7d4137b75665
+          - be842874e2b1103773a52fa1e541ae01
+          - aee793d5c29308343b361cfaf746f298
+          - 8ecc8943d3d4958ec7bd503b5875b3e6
+  mode: single
+
+- id: '1734890692052'
+  alias: Huvudentre dörr --> hall lampor
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - sensor.huvudentre_operator
+    attribute: method
+    to: keypad
+  conditions:
+  - condition: device
+    device_id: 93219365031c2a40046682e1e95aa27e
+    domain: lock
+    entity_id: 7d7b5df50aa8b44487b67e32874a0b57
+    type: is_unlocked
+  - condition: state
+    entity_id: light.hallen
+    state: 'off'
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data: {}
+    target:
+      entity_id: light.hallen
+  mode: single
+
+- id: '1753213938969'
+  alias: Stenhuvud dammen react
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - switch.plug_001
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      transition: 1
+      rgb_color:
+      - 0
+      - 170
+      - 255
+      brightness_pct: 100
+    target:
+      entity_id: light.utomhus_stenhuvud_spot
+  - delay:
+      hours: 0
+      minutes: 0
+      seconds: 1
+      milliseconds: 500
+  - if:
+    - condition: numeric_state
+      entity_id: sensor.grind_ljusstyrka
+      below: 25
+    then:
+    - action: light.turn_on
+      metadata: {}
+      data:
+        transition: 1
+        color_temp_kelvin: 2435
+        brightness_pct: 30
+      target:
+        entity_id: light.utomhus_stenhuvud_spot
+    else:
+    - action: light.turn_off
+      metadata: {}
+      data:
+        transition: 1
+      target:
+        entity_id: light.utomhus_stenhuvud_spot
+  mode: single

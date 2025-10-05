@@ -1,0 +1,602 @@
+- id: '1730565483382'
+  name: Mysbelysning Entrevåning
+  entities:
+    light.bulb_006:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      friendly_name: Burspråk
+      supported_features: 44
+      state: unavailable
+    light.vardagsrum_treudd_mitt:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 189
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Treudd mitt
+      supported_features: 44
+      state: 'on'
+    light.vardagsrum_treudd_vanster:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 166
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Treudd vänster
+      supported_features: 44
+      state: 'on'
+    light.tv_bank_lampa:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 59
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: TV bänk Lampa
+      supported_features: 44
+      state: 'on'
+    light.vardagsrum_tv_hoger:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 153
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:led-strip
+      friendly_name: Tv höger
+      supported_features: 44
+      state: 'on'
+    light.vardagsrum_tv_vanster:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 153
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:led-strip
+      friendly_name: Tv vänster
+      supported_features: 44
+      state: 'on'
+    light.koksbank_hoger_lampa_2:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4504
+      min_mireds: 222
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 145
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Köksbänk höger Lampa
+      supported_features: 40
+      state: 'on'
+    light.koksbank_mitten_lampa_3:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4504
+      min_mireds: 222
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 145
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Köksbänk mitten Lampa
+      supported_features: 40
+      state: 'on'
+    light.koksbank_vanster_lampa:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4504
+      min_mireds: 222
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 145
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Köksbänk vänster Lampa
+      supported_features: 40
+      state: 'on'
+    light.hall_byra_belysning:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 209
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Byrå
+      supported_features: 40
+      state: 'on'
+    light.hall_kapprum_strip:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:led-strip-variant
+      friendly_name: Kapprum
+      supported_features: 44
+      state: 'on'
+    light.korridor_belysning:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 168
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Korridor
+      supported_features: 44
+      state: 'on'
+    light.hall_stadskrubb_strip:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2732
+      color_temp: 366
+      hs_color:
+      - 28.327
+      - 64.71
+      rgb_color:
+      - 255
+      - 167
+      - 89
+      xy_color:
+      - 0.524
+      - 0.387
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:led-strip-variant
+      friendly_name: Städskrubb
+      supported_features: 44
+      state: 'on'
+    light.extra_taklampa_02:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 189
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Taklampa
+      supported_features: 44
+      state: 'on'
+    light.piano_lampa:
+      min_color_temp_kelvin: 2202
+      max_color_temp_kelvin: 4504
+      min_mireds: 222
+      max_mireds: 454
+      supported_color_modes:
+      - color_temp
+      color_mode: color_temp
+      brightness: 3
+      color_temp_kelvin: 2202
+      color_temp: 454
+      hs_color:
+      - 29.79
+      - 84.553
+      rgb_color:
+      - 255
+      - 146
+      - 39
+      xy_color:
+      - 0.579
+      - 0.388
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Piano Lampa
+      supported_features: 40
+      state: 'on'
+    light.matsal_sidobord:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Sidobord
+      supported_features: 44
+      state: 'on'
+    light.hall_huvudtaklampa:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Taklampa
+      supported_features: 44
+      state: 'on'
+    light.matsal_tvaudd_hoger:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Tvåudd höger
+      supported_features: 44
+      state: 'on'
+    light.matsal_tvaudd_vanster:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 6535
+      min_mireds: 153
+      max_mireds: 500
+      effect_list:
+      - colorloop
+      supported_color_modes:
+      - color_temp
+      - xy
+      effect:
+      color_mode: color_temp
+      brightness: 254
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Tvåudd vänster
+      supported_features: 44
+      state: 'on'
+    light.kok_bordslampa:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 186
+      off_with_transition: false
+      off_brightness:
+      friendly_name: Bordslampa
+      supported_features: 40
+      state: 'on'
+    light.taklampa_6_filament:
+      min_color_temp_kelvin: 2000
+      max_color_temp_kelvin: 5000
+      min_mireds: 200
+      max_mireds: 500
+      effect_list:
+      - Bedtime
+      - Candlelight
+      - Cool white
+      - Cozy
+      - Daylight
+      - Focus
+      - Golden white
+      - Night light
+      - Pulse
+      - Relax
+      - Steampunk
+      - TV time
+      - Wake up
+      - Warm White
+      supported_color_modes:
+      - color_temp
+      effect:
+      color_mode: color_temp
+      brightness: 69
+      color_temp_kelvin: 2000
+      color_temp: 500
+      hs_color:
+      - 30.601
+      - 94.547
+      rgb_color:
+      - 255
+      - 136
+      - 13
+      xy_color:
+      - 0.599
+      - 0.382
+      entity_id:
+      - light.vardagsrum_wiz_01
+      - light.vardagsrum_wiz_04
+      - light.vardagsrum_wiz_05
+      - light.vardagsrum_wiz_06
+      - light.vardagsrum_wiz_02
+      - light.vardagsrum_wiz_03
+      icon: mdi:lightbulb-group
+      friendly_name: Taklampa 6 Filament
+      supported_features: 4
+      state: 'on'
+  icon: mdi:sofa
+  metadata:
+    light.taklampa_6_filament:
+      entity_only: true

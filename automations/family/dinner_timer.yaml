@@ -1,0 +1,208 @@
+- id: '1754421957201'
+  alias: Middagstimer - Starta nedräkning
+  description: Startar 30-minuterstimern för middag och får blå LED att blinka.
+  triggers:
+  - entity_id: input_button.middagstimer_start
+    trigger: state
+  actions:
+  - target:
+      entity_id:
+      - input_boolean.middagstimer_bekraftad
+      - input_boolean.skarmtid_straff_aktivt
+    action: input_boolean.turn_off
+  - target:
+      entity_id: timer.middag_nedrakning
+    action: timer.start
+  - target:
+      entity_id: light.pi_gpio_red_led
+    action: light.turn_off
+  - target:
+      entity_id: light.pi_gpio_blue_led
+    data:
+      flash: long
+    action: light.turn_on
+  mode: single
+
+- id: '1754421981732'
+  alias: Middagstimer - Bekräfta start (fysisk knapp)
+  description: Anton bekräftar att han sett varningen.
+  triggers:
+  - entity_id: binary_sensor.pi_gpio_button
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: timer.middag_nedrakning
+    state: active
+  - condition: state
+    entity_id: input_boolean.middagstimer_bekraftad
+    state: 'off'
+  actions:
+  - target:
+      entity_id: input_boolean.middagstimer_bekraftad
+    action: input_boolean.turn_on
+  - target:
+      entity_id: light.pi_gpio_blue_led
+    data:
+      flash: 'off'
+    action: light.turn_on
+  mode: single
+
+- id: '1754422012964'
+  alias: Middagstimer - Händelser under nedräkning
+  description: Ändrar LED-status vid 15, 10 och 5 minuter kvar.
+  triggers:
+  - entity_id: timer.middag_nedrakning
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: timer.middag_nedrakning
+    state: active
+  actions:
+  - choose:
+    - conditions:
+      - condition: template
+        value_template: '{{ state_attr(''timer.middag_nedrakning'', ''remaining'')
+          == ''00:15:00'' }}'
+      sequence:
+      - target:
+          entity_id: light.pi_gpio_red_led
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ state_attr(''timer.middag_nedrakning'', ''remaining'')
+          == ''00:10:00'' }}'
+      sequence:
+      - target:
+          entity_id: light.pi_gpio_red_led
+        data:
+          flash: long
+        action: light.turn_on
+    - conditions:
+      - condition: template
+        value_template: '{{ state_attr(''timer.middag_nedrakning'', ''remaining'')
+          == ''00:05:00'' }}'
+      sequence:
+      - target:
+          entity_id: light.pi_gpio_red_led
+        data:
+          flash: short
+        action: light.turn_on
+  mode: single
+
+- id: '1754422041344'
+  alias: Middagstimer - Tiden är ute
+  description: Båda lamporna blinkar och strafftiden startar.
+  triggers:
+  - event_type: timer.finished
+    event_data:
+      entity_id: timer.middag_nedrakning
+    trigger: event
+  actions:
+  - target:
+      entity_id: input_boolean.skarmtid_straff_aktivt
+    action: input_boolean.turn_on
+  - target:
+      entity_id:
+      - light.pi_gpio_blue_led
+      - light.pi_gpio_red_led
+    data:
+      flash: short
+    action: light.turn_on
+  - delay:
+      minutes: 20
+  - target:
+      entity_id: input_boolean.skarmtid_straff_aktivt
+    action: input_boolean.turn_off
+  mode: single
+
+- id: '1754422070899'
+  alias: Middagstimer - Bekräfta tid ute (fysisk knapp)
+  description: Anton bekräftar, och lamporna slutar blinka.
+  triggers:
+  - entity_id: binary_sensor.pi_gpio_button
+    to: 'on'
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: timer.middag_nedrakning
+    state: idle
+  - condition: state
+    entity_id: input_boolean.skarmtid_straff_aktivt
+    state: 'on'
+  actions:
+  - target:
+      entity_id:
+      - light.pi_gpio_blue_led
+      - light.pi_gpio_red_led
+    action: light.turn_off
+  mode: single
+
+- id: '1754478797647'
+  alias: Display - Uppdatera nedräkning på OLED
+  description: Uppdaterar OLED-skärmen med återstående tid var 5:e sekund.
+  triggers:
+  - seconds: /1
+    trigger: time_pattern
+  conditions:
+  - condition: state
+    entity_id: timer.middag_nedrakning
+    state: active
+  actions:
+  - data:
+      topic: homeassistant/pi/display/set
+      payload: "{% set remaining_seconds = (state_attr('timer.middag_nedrakning',
+        'finishes_at') | as_timestamp - now() | as_timestamp) | int(0) %} {% if remaining_seconds
+        >= 0 %}\n  {{- (remaining_seconds / 60) | int | string }}:{{ '{:02d}'.format(remaining_seconds
+        % 60) -}}\n{% else %}\n  0:00\n{% endif %}"
+      retain: false
+    action: mqtt.publish
+  mode: single
+
+- id: '1754479854438'
+  alias: Display - Uppdatera skärmtid på OLED
+  description: Visar återstående veckovis skärmtid när den ändras.
+  triggers:
+  - entity_id: input_number.anton_weekly_time
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: timer.middag_nedrakning
+    state: idle
+  actions:
+  - data:
+      topic: homeassistant/pi/display/set
+      payload: '{% set total_minutes = states(''input_number.anton_weekly_time'')
+        | int(0) %} {% set hours = (total_minutes / 60) | int %} {% set minutes =
+        total_minutes % 60 %} TID KVAR\n{{ hours }}h {{ minutes }}m'
+      retain: false
+    action: mqtt.publish
+  mode: single
+
+- id: '1754479881953'
+  alias: Display - Växla visningsläge (Timer/Skärmtid)
+  description: Byter omedelbart vad skärmen visar när timern startar/stoppar.
+  triggers:
+  - entity_id: timer.middag_nedrakning
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: state
+        entity_id: timer.middag_nedrakning
+        state: active
+      sequence:
+      - data:
+          topic: homeassistant/pi/display/set
+          payload: '{% set remaining_seconds = (state_attr(''timer.middag_nedrakning'',
+            ''duration'').total_seconds()) | int(0) %} {{- (remaining_seconds / 60)
+            | int | string }}:{{ ''{:02d}''.format(remaining_seconds % 60) -}}'
+        action: mqtt.publish
+    default:
+    - data:
+        topic: homeassistant/pi/display/set
+        payload: '{% set total_minutes = states(''input_number.anton_weekly_time'')
+          | int(0) %} {% set hours = (total_minutes / 60) | int %} {% set minutes
+          = total_minutes % 60 %} TID KVAR\n{{ hours }}h {{ minutes }}m'
+      action: mqtt.publish
+  mode: single

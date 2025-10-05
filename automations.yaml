@@ -1,0 +1,23 @@
+# Automations - huvudfil som inkluderar alla automatiseringar
+# Organiserat efter kategorier i undermappar
+
+# Lighting automations
+- !include_dir_merge_list lighting/
+
+# Convenience automations  
+- !include_dir_merge_list convenience/
+
+# Entertainment automations
+- !include_dir_merge_list entertainment/
+
+# Environment automations
+- !include_dir_merge_list environment/
+
+# Family automations
+- !include_dir_merge_list family/
+
+# Notification automations
+- !include_dir_merge_list notifications/
+
+# System automations
+- !include_dir_merge_list system/

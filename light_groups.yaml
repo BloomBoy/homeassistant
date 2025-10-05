@@ -1,0 +1,92 @@
+# Light Groups - grupperar lampor för enklare kontroll via automations
+# Dessa skapar light.* entities som kan användas i automations och scripts
+
+light:
+  - platform: group
+    name: "Lampgrupp Utomhus"
+    unique_id: outdoor_lights_group
+    entities:
+      - light.utomhus_ytterdorr
+      - light.utomhus_stenhuvud_spot
+      - light.utomhus_kaprifol_spot
+      - light.utomhus_kastanj_spot
+      - light.utomhus_flaggstang_spot
+      - light.utomhus_appeltrad_spot
+      - light.utomhus_grus_spot_01
+      - light.utomhus_grus_spot_02
+      - light.utomhus_grus_spot_03
+      - light.utomhus_grus_spot_04
+      - light.utomhus_grus_spot_05
+      - light.utomhus_fasad_strip
+      - light.sidoentre_lampa
+
+  - platform: group
+    name: "Lampgrupp Hallen"
+    unique_id: hallway_lights_group
+    entities:
+      - light.hall_huvudtaklampa
+      - light.hall_byra_belysning
+      - light.hall_kapprum_strip
+      - light.hall_stadskrubb_strip
+      - light.hall_kapprum_uppe_strip
+      - light.korridor_belysning
+
+  - platform: group
+    name: "Lampgrupp Bänklampor"
+    unique_id: kitchen_counter_lights_group
+    entities:
+      - light.koksbank_hoger_lampa
+      - light.koksbank_mitten_lampa
+      - light.koksbank_vanster_lampa
+
+  - platform: group
+    name: "Matsalen"
+    unique_id: dining_room_lights_group
+    entities:
+      - light.matsal_tvaudd_hoger
+      - light.matsal_tvaudd_vanster
+      - light.matsal_sidobord
+      - light.piano_lampa
+
+  - platform: group
+    name: "Lampgrupp Arbetsrum"
+    unique_id: office_lights_group
+    entities:
+      - light.arbetsrum_taklampa
+      - light.arbetsrum_myslampa
+
+  - platform: group
+    name: "Lampgrupp Vägglampor Toalett"
+    unique_id: toilet_wall_lights_group
+    entities:
+      - light.toalett_vagglampa_vanster
+      - light.toalett_vagglampa_mitten
+      - light.toalett_vagglampa_hoger
+
+  - platform: group
+    name: "Lampgrupp Vardagsrum"
+    unique_id: living_room_lights_group
+    entities:
+      - light.vardagsrum_wiz_1
+      - light.vardagsrum_wiz_2
+      - light.vardagsrum_wiz_3
+      - light.vardagsrum_wiz_4
+      - light.vardagsrum_wiz_5
+      - light.vardagsrum_wiz_6
+      - light.vardagsrum_treudd_mitt
+      - light.vardagsrum_treudd_vanster
+      - light.vardagsrum_tv_vanster
+      - light.vardagsrum_tv_hoger
+      - light.vardagsrum_tv_filament
+      - light.vardagsrum_mittbelysning
+      - light.tv_bank_lampa
+      - light.taklampa_6_filament
+      - light.bursprak_lampa
+
+  - platform: group
+    name: "Vardagsrum TV Sofa"
+    unique_id: living_room_tv_sofa_group
+    entities:
+      - light.vardagsrum_tv_vanster
+      - light.vardagsrum_tv_hoger
+      - light.tv_bank_lampa

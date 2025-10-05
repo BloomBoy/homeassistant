@@ -1,0 +1,24 @@
+# Dark Mode Control Script
+# Toggle mellan ljust och mörkt tema
+
+toggle_dark_mode:
+  alias: "Toggle Dark Mode"
+  icon: mdi:theme-light-dark
+  sequence:
+    - service: input_boolean.toggle
+      target:
+        entity_id: input_boolean.dark_mode
+    - if:
+        - condition: state
+          entity_id: input_boolean.dark_mode
+          state: "on"
+      then:
+        # Aktivera mörkt tema
+        - service: frontend.set_theme
+          data:
+            name: "midnight"
+      else:
+        # Aktivera ljust tema
+        - service: frontend.set_theme
+          data:
+            name: "default"

@@ -1,0 +1,102 @@
+- id: '1722005455285'
+  alias: Wall Switch - Utomhus
+  description: ''
+  use_blueprint:
+    path: vilmer/hue_wall_switch_module_light.yaml
+    input:
+      switch_device: b7b5edd209df61be36fc14548db29f13
+      light_target:
+        area_id: utomhus
+
+- id: '1722005478249'
+  alias: Wall Switch - Hall
+  description: ''
+  use_blueprint:
+    path: vilmer/hue_wall_switch_module_light.yaml
+    input:
+      switch_device: b6d28e057561346ce87d29f4f265837f
+      button_choice: left_press_release
+      light_target:
+        entity_id: light.hallen
+
+- id: '1723375407605'
+  alias: Dim Lights on Hold
+  description: ''
+  trigger:
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: b6d28e057561346ce87d29f4f265837f
+      command: left_hold
+    id: hold
+  - platform: event
+    event_type: zha_event
+    event_data:
+      device_id: b6d28e057561346ce87d29f4f265837f
+      command: left_hold_release
+    id: hold_release
+  action:
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - hold
+      sequence:
+      - if:
+        - condition: state
+          entity_id: light.extra_taklampa_02
+          state: 'on'
+        then:
+        - service: light.turn_on
+          metadata: {}
+          data_template:
+            brightness_step_pct: "{% if states('input_text.last_dim') == '20' %}\n
+              \ -20\n{% else %}\n  20\n{% endif %}\n"
+          target:
+            entity_id: light.hallen
+    - conditions:
+      - condition: trigger
+        id:
+        - hold_release
+      sequence:
+      - service: input_text.set_value
+        target:
+          entity_id: input_text.last_dim
+        data_template:
+          value: "{% if states('input_text.last_dim') == '20' %}\n  -20\n{% else %}\n
+            \ 20\n{% endif %}\n"
+
+- id: '1733074095976'
+  alias: Utomhus via Kök - Philips Hue Wall Module
+  description: ''
+  use_blueprint:
+    path: cfeenstra/philips-hue-wall-module-rdm001-rdm004-button-press-blueprint.yaml
+    input:
+      remote: 2a6e730457d95913a5b6388217a621ab
+      button_left_single_press:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.utomhus
+
+- id: '1733075309545'
+  alias: Kök - Philips Hue Wall Module 2.0
+  description: Test nya blueprint
+  use_blueprint:
+    path: cfeenstra/philips-hue-wall-module-rdm001-rdm004-button-press-blueprint.yaml
+    input:
+      remote: 6c6cac538ae620d9afc07c4c297588ea
+      button_left_single_press:
+      - service: light.toggle
+        metadata: {}
+        data:
+          kelvin: 2000
+        target:
+          entity_id: light.banklampor
+      button_right_single_press:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.kok_bordslampa

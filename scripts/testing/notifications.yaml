@@ -1,0 +1,14 @@
+notification_test:
+  sequence:
+  - action: notify.mobile_app_pixel_7
+    metadata: {}
+    data:
+      title: testar
+      message: testar
+  - action: notify.mobile_app_pixel_6_pro
+    metadata: {}
+    data:
+      message: tesar
+      title: TESTAr
+  alias: notification test
+  description: ''

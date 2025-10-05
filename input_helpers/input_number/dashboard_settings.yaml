@@ -1,0 +1,38 @@
+# Dashboard Settings - Input Numbers
+# Inställningar för belysning och andra kontroller
+
+cozy_brightness:
+  name: "Mysläge Ljusstyrka"
+  initial: 30
+  min: 1
+  max: 100
+  step: 1
+  unit_of_measurement: "%"
+  icon: mdi:brightness-6
+
+cozy_temperature:
+  name: "Mysläge Färgtemperatur"
+  initial: 2000
+  min: 2000
+  max: 6500
+  step: 100
+  unit_of_measurement: "K"
+  icon: mdi:thermometer
+
+alert_brightness:
+  name: "Varningsläge Ljusstyrka"
+  initial: 80
+  min: 50
+  max: 100
+  step: 5
+  unit_of_measurement: "%"
+  icon: mdi:brightness-7
+
+fade_duration:
+  name: "Fade-in Duration"
+  initial: 3
+  min: 1
+  max: 10
+  step: 1
+  unit_of_measurement: "s"
+  icon: mdi:timer-outline

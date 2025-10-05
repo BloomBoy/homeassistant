@@ -1,0 +1,38 @@
+- id: '1721567668267'
+  name: Toalett Beslysning
+  entities:
+    light.toalett_vagglampa_hoger:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 254
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:lightbulb-variant-outline
+      friendly_name: Vägglampa Höger
+      supported_features: 40
+      state: 'on'
+    light.toalett_vagglampa_mitten:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 254
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:lightbulb-variant-outline
+      friendly_name: Vägglampa Mitten
+      supported_features: 40
+      state: 'on'
+    light.toalett_vagglampa_vanster:
+      supported_color_modes:
+      - brightness
+      color_mode: brightness
+      brightness: 254
+      off_with_transition: false
+      off_brightness:
+      icon: mdi:lightbulb-variant-outline
+      friendly_name: Vägglampa Vänster
+      supported_features: 40
+      state: 'on'
+  icon: mdi:string-lights
+  metadata: {}

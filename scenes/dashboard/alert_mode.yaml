@@ -1,0 +1,134 @@
+# Varningsläge - Alert Mode Scene
+# Rött pulserande ljus för uppmärksamhet
+
+- id: 'alert_mode_scene'
+  name: Varningsläge
+  icon: mdi:alert-circle
+  entities:
+    # Alla WiZ-lampor - rött ljus
+    light.vardagsrum_wiz_01:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_wiz_02:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_wiz_03:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_wiz_04:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_wiz_05:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_wiz_06:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+
+    # Philips Hue lampor som stödjer färg - rött
+    light.vardagsrum_treudd_mitt:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_treudd_vanster:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_tv_vanster:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.vardagsrum_tv_hoger:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.tv_bank_lampa:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+
+    # Hall lampor
+    light.hall_huvudtaklampa:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.hall_kapprum_strip:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.hall_stadskrubb_strip:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+
+    # Matsal
+    light.matsal_tvaudd_hoger:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.matsal_tvaudd_vanster:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.matsal_sidobord:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+
+    # Utomhus spots - rött
+    light.utomhus_stenhuvud_spot:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.utomhus_kaprifol_spot:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+    light.utomhus_kastanj_spot:
+      state: on
+      brightness: 255
+      rgb_color: [255, 0, 0]
+      transition: 1
+
+    # Lampor som inte stödjer färg - max ljusstyrka
+    light.arbetsrum_taklampa:
+      state: on
+      brightness: 255
+      transition: 1
+    light.utomhus_ytterdorr:
+      state: on
+      brightness: 255
+      transition: 1
+    light.korridor_belysning:
+      state: on
+      brightness: 255
+      transition: 1
+    light.kok_bordslampa:
+      state: on
+      brightness: 255
+      transition: 1

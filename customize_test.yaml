@@ -1,0 +1,23 @@
+# Test customizations for renamed entities
+customize:
+  # WiZ Lampor (Batch 1)
+  light.vardagsrum_wiz_01:
+    friendly_name: "Vardagsrum WiZ 1"
+  light.vardagsrum_wiz_02:
+    friendly_name: "Vardagsrum WiZ 2"
+  light.vardagsrum_wiz_03:
+    friendly_name: "Vardagsrum WiZ 3"
+  light.vardagsrum_wiz_04:
+    friendly_name: "Vardagsrum WiZ 4"
+  light.vardagsrum_wiz_05:
+    friendly_name: "Vardagsrum WiZ 5"
+  light.vardagsrum_wiz_06:
+    friendly_name: "Vardagsrum WiZ 6"
+
+  # Batch 4 Test entiteter
+  light.utomhus_stenhuvud_spot:
+    friendly_name: "Utomhus Stenhuvud Spot"
+  light.arbetsrum_myslampa:
+    friendly_name: "Arbetsrum Myslampa"
+  light.vardagsrum_tv_vanster:
+    friendly_name: "Vardagsrum TV Vänster"

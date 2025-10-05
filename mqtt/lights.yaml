@@ -1,0 +1,32 @@
+# MQTT Light entities for custom LED controls
+light:
+  - name: "Pico W LED"
+    unique_id: pico_w_onboard_led
+    command_topic: "homeassistant/light/pico_led/set"
+    state_topic: "homeassistant/light/pico_led/state"
+    # Dessa talar om vad som ska SKICKAS till Picon
+    payload_on: "ON"
+    payload_off: "OFF"
+    # Raderna 'state_on' och 'state_off' är borttagna
+    optimistic: false
+    qos: 1
+    retain: true
+
+  - name: "Pi GPIO Blue LED"
+    unique_id: "pi_gpio_blue_led_01"
+    command_topic: "homeassistant/pi/blue_led/set"
+    state_topic: "homeassistant/pi/blue_led/state"
+    payload_on: "ON"
+    payload_off: "OFF"
+    qos: 1
+    retain: true
+
+  # This is your NEW red LED
+  - name: "Pi GPIO Red LED"
+    unique_id: "pi_gpio_red_led_01"
+    command_topic: "homeassistant/pi/red_led/set"
+    state_topic: "homeassistant/pi/red_led/state"
+    payload_on: "ON"
+    payload_off: "OFF"
+    qos: 1
+    retain: true

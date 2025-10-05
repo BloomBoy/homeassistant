@@ -1,0 +1,149 @@
+# Template Sensors för Dashboard
+# Sammanfattningar av luftkvalitet, temperatur och energi
+
+- sensor:
+    # Luftkvalitet sammanfattning
+    - name: "Luftkvalitet Status"
+      unique_id: "air_quality_status"
+      state: >
+        {% set co2_sensors = [
+          states('sensor.luftkvalitet_arbetsrum_koldioxid')|int(0),
+          states('sensor.luftkvalitet_garage_koldioxid')|int(0),
+          states('sensor.luftkvalitet_vilmer_koldioxid')|int(0)
+        ] %}
+        {% set max_co2 = co2_sensors | max %}
+        {% if max_co2 < 600 %}
+          Utmärkt
+        {% elif max_co2 < 800 %}
+          Bra
+        {% elif max_co2 < 1000 %}
+          Acceptabel
+        {% else %}
+          Dålig
+        {% endif %}
+      icon: >
+        {% set co2_sensors = [
+          states('sensor.luftkvalitet_arbetsrum_koldioxid')|int(0),
+          states('sensor.luftkvalitet_garage_koldioxid')|int(0),
+          states('sensor.luftkvalitet_vilmer_koldioxid')|int(0)
+        ] %}
+        {% set max_co2 = co2_sensors | max %}
+        {% if max_co2 < 600 %}
+          mdi:leaf
+        {% elif max_co2 < 800 %}
+          mdi:check-circle
+        {% elif max_co2 < 1000 %}
+          mdi:alert
+        {% else %}
+          mdi:alert-circle
+        {% endif %}
+      attributes:
+        max_co2: >
+          {% set co2_sensors = [
+            states('sensor.luftkvalitet_arbetsrum_koldioxid')|int(0),
+            states('sensor.luftkvalitet_garage_koldioxid')|int(0),
+            states('sensor.luftkvalitet_vilmer_koldioxid')|int(0)
+          ] %}
+          {{ co2_sensors | max }}
+        worst_room: >
+          {% set rooms = {
+            'sensor.luftkvalitet_arbetsrum_koldioxid': 'Arbetsrum',
+            'sensor.luftkvalitet_garage_koldioxid': 'Garage',
+            'sensor.luftkvalitet_vilmer_koldioxid': 'Vilmer'
+          } %}
+          {% set max_co2 = 0 %}
+          {% set worst_room = 'Okänt' %}
+          {% for sensor, room in rooms.items() %}
+            {% set co2 = states(sensor)|int(0) %}
+            {% if co2 > max_co2 %}
+              {% set max_co2 = co2 %}
+              {% set worst_room = room %}
+            {% endif %}
+          {% endfor %}
+          {{ worst_room }}
+
+    # Genomsnittlig inomhustemperatur
+    - name: "Genomsnittlig Inomhustemperatur"
+      unique_id: "average_indoor_temp"
+      state: >
+        {% set temps = [
+          states('sensor.luftkvalitet_arbetsrum_temperatur')|float(0),
+          states('sensor.luftkvalitet_vilmer_temperatur')|float(0)
+        ] %}
+        {% set valid_temps = temps | select('>', 0) | list %}
+        {% if valid_temps | count > 0 %}
+          {{ (valid_temps | sum / valid_temps | count) | round(1) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: "°C"
+      device_class: temperature
+      icon: mdi:home-thermometer
+
+    # Utomhustemperatur
+    - name: "Utomhustemperatur"
+      unique_id: "outdoor_temperature"
+      state: >
+        {{ states('sensor.luftkvalitet_ute_temperatur')|float(0) }}
+      unit_of_measurement: "°C"
+      device_class: temperature
+      icon: mdi:thermometer
+
+    # Aktuell elförbrukning (om den finns)
+    - name: "Aktuell Elförbrukning"
+      unique_id: "current_power_usage"
+      state: >
+        {% if states('sensor.tibber_pulse_varmddvagen_224_ackumulerad_forbrukning') != 'unavailable' %}
+          {{ states('sensor.tibber_pulse_varmddvagen_224_ackumulerad_forbrukning')|float(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: "kWh"
+      device_class: energy
+      icon: mdi:lightning-bolt
+
+    # Elpris nu
+    - name: "Elpris Nu"
+      unique_id: "current_electricity_price"
+      state: >
+        {% if states('sensor.tibber_pulse_varmddvagen_224_elpris') != 'unavailable' %}
+          {{ states('sensor.tibber_pulse_varmddvagen_224_elpris')|float(0) }}
+        {% else %}
+          0
+        {% endif %}
+      unit_of_measurement: "SEK/kWh"
+      icon: mdi:currency-sek
+
+    # Antal lampor på
+    - name: "Antal Lampor På"
+      unique_id: "lights_on_count"
+      state: >
+        {% set ns = namespace(count=0) %}
+        {% for entity_id in state_attr('group.all_lights', 'entity_id') %}
+          {% if states(entity_id) == 'on' %}
+            {% set ns.count = ns.count + 1 %}
+          {% endif %}
+        {% endfor %}
+        {{ ns.count }}
+      icon: mdi:lightbulb-on
+      attributes:
+        total_lights: >
+          {{ state_attr('group.all_lights', 'entity_id') | length }}
+
+    # Värmepump status
+    - name: "Värmepump Status"
+      unique_id: "heat_pump_status"
+      state: >
+        {% set outdoor_temp = states('sensor.viessmann_varmepump_utetemperatur')|float(0) %}
+        {% set supply_temp = states('sensor.viessmann_varmepump_sekundarkrets_framledningstemperatur')|float(0) %}
+        {% if outdoor_temp < 5 and supply_temp > 30 %}
+          Värmer aktivt
+        {% elif supply_temp > 20 %}
+          Standby
+        {% else %}
+          Vilande
+        {% endif %}
+      icon: mdi:heat-pump
+      attributes:
+        outdoor_temp: "{{ states('sensor.viessmann_varmepump_utetemperatur') }}"
+        supply_temp: "{{ states('sensor.viessmann_varmepump_sekundarkrets_framledningstemperatur') }}"

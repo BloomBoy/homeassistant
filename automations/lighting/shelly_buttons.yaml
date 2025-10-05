@@ -1,0 +1,257 @@
+- id: '1733260764888'
+  alias: Shelly i4 4 Buttons actions Av på vardagsrum
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: 6cd46fe4152b5969fa770a84eb5125a4
+      downb1: []
+      downb2: []
+      singleb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.vardagsrum_tv_sofa
+      singleb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.taklampa_6_filament
+
+- id: '1734191488323'
+  alias: Lampor AV/PÅ Sovrum M&K
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: d5a080c7d1fe6ee07165706405666a2c
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          area_id: sovrum_morgan_karin
+
+- id: '1734197353094'
+  alias: Lampor AV/PÅ - Matsal
+  description: 'Toggla matsalens lampor'
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: 0ff421c0bbb5b838ef70f9bbccd07f45
+      downb1: []
+      singleb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          area_id: matsal
+
+- id: '1734259770344'
+  alias: Lampor av/PÅ arbetsrum
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: 3b7975365647af9abf17aaba1706d0c1
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.arbetsrum
+      downb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.taklampa_6_filament
+
+- id: '1734265162532'
+  alias: Lampor OFF/ON - Toalett
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: abfa0c96e028bd8277edea98274a0859
+      singleb1:
+      - service: light.toggle
+        metadata: {}
+        data:
+          transition: 1
+        target:
+          entity_id: light.vagglampor_toalett
+      singleb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.hallen
+
+- id: '1734292388991'
+  alias: Onoff lampor utomhus
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: a15ac9a83d3ff007813cb19e8bf9b594
+      singleb1: []
+      singleb2: []
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.utomhus
+      upb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.utomhus
+      downb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: 046e553f93848f0af3f6e768a139a779
+      upb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: 046e553f93848f0af3f6e768a139a779
+
+- id: '1734368292799'
+  alias: OnOff Hallen
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: d3d5e18104d1b89d4de93ad2bb42d577
+      singleb1: []
+      singleb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.hallen
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.hallen
+
+- id: '1734371733810'
+  alias: Onoff köket
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: fed4dbef6885ecfe8624a8556f36d201
+      singleb1: []
+      singleb2: []
+      singleb3: []
+      upb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id:
+          - 309b59bf24e4ed5cadca0a954b933827
+      upb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          entity_id: light.banklampor
+      upb3:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: a7bf28fcf51dda64a5ec299b6be31aea
+
+- id: '1734381823768'
+  alias: Onoff sidoentre
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: f643f6a0d0859ebe810fc147885abd13
+      singleb1: []
+      singleb2: []
+      singleb3: []
+      upb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: 8ecc8943d3d4958ec7bd503b5875b3e6
+      upb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: a7bf28fcf51dda64a5ec299b6be31aea
+      upb3: []
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: 8ecc8943d3d4958ec7bd503b5875b3e6
+      downb2:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: a7bf28fcf51dda64a5ec299b6be31aea
+
+- id: '1734386463888'
+  alias: Onoff trappen botten
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: f79c6b52cf1df97621ca46b8da57d081
+      downb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: a7bf28fcf51dda64a5ec299b6be31aea
+      downb2: []
+      upb1:
+      - service: light.toggle
+        metadata: {}
+        data: {}
+        target:
+          device_id: a7bf28fcf51dda64a5ec299b6be31aea
+
+- id: '1734862077302'
+  alias: Onoff arbetsrum uppe
+  description: ''
+  use_blueprint:
+    path: Danieldz/shelly-i4-4-buttons-actions.yaml
+    input:
+      button: d47721d2dddfa2939df4c3df1908799a
+      singleb1: []
+      singleb2: []
+      downb1:
+      - metadata: {}
+        data: {}
+        target:
+          area_id: arbetsrum
+        action: light.toggle
+      upb1:
+      - metadata: {}
+        data: {}
+        target:
+          entity_id: light.utomhus
+        action: light.toggle
+      downb2: []
+      upb2: []

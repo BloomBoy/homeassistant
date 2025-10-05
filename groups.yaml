@@ -1,0 +1,149 @@
+# Light Groups för Smart Home Dashboard
+# Organiserar alla lampor i logiska grupper
+
+# Master group - alla lampor i hela huset
+all_lights:
+  name: "Alla Lampor"
+  icon: mdi:home-lightbulb-outline
+  entities:
+    # Vardagsrum
+    - light.vardagsrum_wiz_1
+    - light.vardagsrum_wiz_2
+    - light.vardagsrum_wiz_3
+    - light.vardagsrum_wiz_4
+    - light.vardagsrum_wiz_5
+    - light.vardagsrum_wiz_6
+    - light.vardagsrum_treudd_mitt
+    - light.vardagsrum_treudd_vanster
+    - light.vardagsrum_tv_vanster
+    - light.vardagsrum_tv_hoger
+    - light.vardagsrum_tv_filament
+    - light.vardagsrum_mittbelysning
+    - light.tv_bank_lampa
+    - light.taklampa_6_filament
+    - light.bursprak_lampa
+
+    # Kök
+    - light.kok_bordslampa
+    - light.koksbank_hoger_lampa
+    - light.koksbank_mitten_lampa
+    - light.koksbank_vanster_lampa
+
+    # Matsal
+    - light.matsal_tvaudd_hoger
+    - light.matsal_tvaudd_vanster
+    - light.matsal_sidobord
+    - light.piano_lampa
+
+    # Hall och korridor
+    - light.hall_huvudtaklampa
+    - light.hall_byra_belysning
+    - light.hall_kapprum_strip
+    - light.hall_stadskrubb_strip
+    - light.hall_kapprum_uppe_strip
+    - light.korridor_belysning
+
+    # Arbetsrum
+    - light.arbetsrum_taklampa
+    - light.arbetsrum_myslampa
+
+    # Sovrum
+    - light.vilmer_sanglampa
+
+    # Toalett
+    - light.toalett_vagglampa_vanster
+    - light.toalett_vagglampa_mitten
+    - light.toalett_vagglampa_hoger
+
+    # Trapp
+    - light.trapp_belysning_topp
+    - light.trapp_belysning_botten
+
+    # Utomhus
+    - light.utomhus_ytterdorr
+    - light.utomhus_stenhuvud_spot
+    - light.utomhus_kaprifol_spot
+    - light.utomhus_kastanj_spot
+    - light.utomhus_flaggstang_spot
+    - light.utomhus_appeltrad_spot
+    - light.utomhus_grus_spot_01
+    - light.utomhus_grus_spot_02
+    - light.utomhus_grus_spot_03
+    - light.utomhus_grus_spot_04
+    - light.utomhus_grus_spot_05
+    - light.utomhus_fasad_strip
+    - light.sidoentre_lampa
+
+    # Signify lampor
+    - light.signify_lca004_lampa
+    - light.signify_lcl001_lampa
+    - light.signify_lwv001_lampa
+
+    # Extra
+    - light.extra_taklampa_01
+    - light.extra_taklampa_02
+
+# Rumsgrupper för snabba kontroller
+living_room_lights:
+  name: "Vardagsrum Belysning"
+  icon: mdi:sofa
+  entities:
+    - light.vardagsrum_wiz_1
+    - light.vardagsrum_wiz_2
+    - light.vardagsrum_wiz_3
+    - light.vardagsrum_wiz_4
+    - light.vardagsrum_wiz_5
+    - light.vardagsrum_wiz_6
+    - light.vardagsrum_treudd_mitt
+    - light.vardagsrum_treudd_vanster
+    - light.vardagsrum_tv_vanster
+    - light.vardagsrum_tv_hoger
+    - light.tv_bank_lampa
+    - light.bursprak_lampa
+
+kitchen_lights:
+  name: "Kök Belysning"
+  icon: mdi:chef-hat
+  entities:
+    - light.kok_bordslampa
+    - light.koksbank_hoger_lampa
+    - light.koksbank_mitten_lampa
+    - light.koksbank_vanster_lampa
+
+outdoor_lights:
+  name: "Utomhusbelysning"
+  icon: mdi:outdoor-lamp
+  entities:
+    - light.utomhus_ytterdorr
+    - light.utomhus_stenhuvud_spot
+    - light.utomhus_kaprifol_spot
+    - light.utomhus_kastanj_spot
+    - light.utomhus_flaggstang_spot
+    - light.utomhus_appeltrad_spot
+    - light.utomhus_grus_spot_01
+    - light.utomhus_grus_spot_02
+    - light.utomhus_grus_spot_03
+    - light.utomhus_grus_spot_04
+    - light.utomhus_grus_spot_05
+    - light.utomhus_fasad_strip
+
+# Luftkvalitetssensorer för sammanfattning
+air_quality_sensors:
+  name: "Luftkvalitetssensorer"
+  icon: mdi:air-filter
+  entities:
+    - sensor.luftkvalitet_arbetsrum_koldioxid
+    - sensor.luftkvalitet_garage_koldioxid
+    - sensor.luftkvalitet_ute_koldioxid
+    - sensor.luftkvalitet_vilmer_koldioxid
+
+# Temperatursensorer för sammanfattning
+temperature_sensors:
+  name: "Temperatursensorer"
+  icon: mdi:thermometer
+  entities:
+    - sensor.luftkvalitet_arbetsrum_temperatur
+    - sensor.luftkvalitet_garage_temperatur
+    - sensor.luftkvalitet_ute_temperatur
+    - sensor.luftkvalitet_vilmer_temperatur
+    - sensor.viessmann_varmepump_utetemperatur

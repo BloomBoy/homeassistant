@@ -1,0 +1,27 @@
+# Dashboard Controls - Input Booleans
+# Master controls för den moderna dashboarden
+
+master_lights:
+  name: "Master Belysning"
+  icon: mdi:lightbulb-group
+  initial: false
+
+cozy_mode:
+  name: "Mysläge"
+  icon: mdi:candle
+  initial: false
+
+alert_mode:
+  name: "Varningsläge"
+  icon: mdi:alert-circle-outline
+  initial: false
+
+lighting_automation:
+  name: "Belysningsautomation"
+  icon: mdi:home-automation
+  initial: true
+
+dark_mode:
+  name: "Dark Mode"
+  icon: mdi:theme-light-dark
+  initial: false

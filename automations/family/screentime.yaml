@@ -1,0 +1,220 @@
+- id: '1724697278793'
+  alias: Anton skärmtid
+  description: ''
+  trigger:
+  - platform: state
+    entity_id:
+    - input_button.begar_tid_anton_telefon
+    to:
+    id: telefon
+  - platform: state
+    entity_id:
+    - input_button.begar_tid_anton_dator
+    to:
+    id: dator
+  condition:
+  - condition: template
+    value_template: '{{ states(''input_number.resterande_skarmtid_anton'') | float
+      >= states(''input_number.begar_tid_anton'') | float }}'
+  action:
+  - service: input_number.set_value
+    data:
+      entity_id: input_number.resterande_skarmtid_anton
+      value: '{{ states(''input_number.resterande_skarmtid_anton'') | float - states(''input_number.begar_tid_anton'')
+        | float }}'
+  - choose:
+    - conditions:
+      - condition: trigger
+        id:
+        - telefon
+      sequence:
+      - service: notify.mobile_app_karins_iphone
+        metadata: {}
+        data:
+          title: SKÄRMTID ANTON TELEFON
+          message: TELEFON. Anton begär {{ states('input_number.begar_tid_anton')
+            }} minuter skärmtid. Vilket är lika med {{ states('input_number.begar_tid_anton')
+            | float / 60}} timmar.
+      - service: notify.mobile_app_pixel_6_pro
+        metadata: {}
+        data:
+          title: SKÄRMTID ANTON TELEFON
+          message: TELEFON. Anton begär {{ states('input_number.begar_tid_anton')
+            }} minuter skärmtid. Vilket är lika med {{ states('input_number.begar_tid_anton')
+            | float / 60}} timmar.
+    - conditions:
+      - condition: trigger
+        id:
+        - telefon
+        - dator
+      sequence:
+      - service: notify.mobile_app_karins_iphone
+        metadata: {}
+        data:
+          title: SKÄRMTID ANTON DATOR
+          message: DATOR. Anton begär {{ states('input_number.begar_tid_anton') }}
+            minuter skärmtid. Vilket är lika med {{ states('input_number.begar_tid_anton')
+            | float / 60}} timmar.
+      - service: notify.mobile_app_pixel_6_pro
+        metadata: {}
+        data:
+          title: SKÄRMTID ANTON DATOR
+          message: DATOR. Anton begär {{ states('input_number.begar_tid_anton') }}
+            minuter skärmtid. Vilket är lika med {{ states('input_number.begar_tid_anton')
+            | float / 60}} timmar.
+  mode: single
+
+- id: '1724700928346'
+  alias: Reset ANTON skrämtid
+  description: ''
+  trigger:
+  - platform: time
+    at: 00:00:01
+  condition:
+  - condition: time
+    weekday:
+    - mon
+  action:
+  - service: input_number.set_value
+    metadata: {}
+    data:
+      value: 840
+    target:
+      entity_id: input_number.resterande_skarmtid_anton
+  mode: single
+
+- id: '1754407046107'
+  alias: Screentime - Update Anton's remaining weekly time
+  description: Updates Anton's remaining weekly screen time throughout the day
+  triggers:
+  - entity_id: sensor.anton_used_screen_time
+    trigger: state
+  - trigger: time
+    at: 02:01:00
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_number.anton_weekly_time
+    data:
+      value: '{{ states(''input_number.anton_remaining_screentime_start_of_day'')
+        | float(0) - states(''sensor.anton_used_screen_time'') | float(0) }}'
+    action: input_number.set_value
+  mode: single
+
+- id: '1754407149044'
+  alias: Screentime - Set Anton's start of day value
+  description: Captures Anton's remaining screen time at the start of the day
+  triggers:
+  - at: 00:00:05
+    trigger: time
+  conditions: []
+  actions:
+  - target:
+      entity_id: input_number.anton_remaining_screentime_start_of_day
+    data:
+      value: '{{ states(''input_number.anton_weekly_time'') | float(0) }}'
+    action: input_number.set_value
+  mode: single
+
+- id: '1754407324224'
+  alias: Screentime - Reset Anton's weekly time on Mondays
+  description: Resets Anton's weekly screen time to 840 minutes every Monday
+  triggers:
+  - at: 00:00:10
+    trigger: time
+  conditions:
+  - condition: time
+    weekday:
+    - mon
+  actions:
+  - target:
+      entity_id: input_number.anton_weekly_time
+    data:
+      value: 840
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.anton_remaining_screentime_start_of_day
+    data:
+      value: 840
+    action: input_number.set_value
+  mode: single
+
+- id: '1754407461177'
+  alias: Screentime - Block or Unblock Anton's PC
+  description: Turns Anton's screen block on or off based on remaining time
+  triggers:
+  - entity_id: input_number.anton_weekly_time
+    trigger: state
+  actions:
+  - choose:
+    - conditions:
+      - condition: numeric_state
+        entity_id: input_number.anton_weekly_time
+        below: 1
+      sequence:
+      - target:
+          entity_id: switch.anton_block_windows
+        action: switch.turn_on
+    default:
+    - target:
+        entity_id: switch.anton_block_windows
+      action: switch.turn_off
+  mode: single
+
+- id: '1754408212629'
+  alias: Screentime - Add bonus time for Anton's Strava run
+  description: Adds bonus screen time for Strava runs
+  triggers:
+  - entity_id: sensor.strava_0_0
+    trigger: state
+  conditions:
+  - condition: template
+    value_template: '{{ trigger.from_state.state not in [''unknown'', ''unavailable'']
+      }}'
+  actions:
+  - variables:
+      bonus_minutes: '{{ (states(''sensor.strava_0_10'') | float(0) / 60) * 2 }}'
+  - target:
+      entity_id: input_number.anton_weekly_time
+    data:
+      value: '{{ states(''input_number.anton_weekly_time'') | float(0) + bonus_minutes
+        }}'
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.anton_remaining_screentime_start_of_day
+    data:
+      value: '{{ states(''input_number.anton_remaining_screentime_start_of_day'')
+        | float(0) + bonus_minutes }}'
+    action: input_number.set_value
+  mode: single
+
+- id: '1754422138332'
+  alias: Skärmtid - Dubbel avräkning vid middag
+  description: Drar av 1x extra skärmtid när strafftiden är aktiv.
+  triggers:
+  - entity_id: sensor.anton_used_screen_time
+    trigger: state
+  conditions:
+  - condition: state
+    entity_id: input_boolean.skarmtid_straff_aktivt
+    state: 'on'
+  - condition: template
+    value_template: '{{ trigger.to_state.state | is_number and trigger.from_state.state
+      | is_number }}'
+  actions:
+  - variables:
+      time_delta: '{{ trigger.to_state.state | float(0) - trigger.from_state.state
+        | float(0) }}'
+  - target:
+      entity_id: input_number.anton_weekly_time
+    data:
+      value: '{{ states(''input_number.anton_weekly_time'') | float(0) - time_delta
+        }}'
+    action: input_number.set_value
+  - target:
+      entity_id: input_number.anton_remaining_screentime_start_of_day
+    data:
+      value: '{{ states(''input_number.anton_remaining_screentime_start_of_day'')
+        | float(0) - time_delta }}'
+    action: input_number.set_value
+  mode: queued

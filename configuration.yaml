@@ -1,0 +1,60 @@
+# Loads default set of integrations. Do not remove.
+default_config:
+
+# Load frontend themes from the themes folder
+frontend:
+  themes: !include_dir_merge_named themes
+
+# Lovelace dashboards
+lovelace:
+  mode: storage
+  dashboards:
+    smart-home-control:
+      mode: yaml
+      title: Smart Hem Kontroll
+      icon: mdi:home-automation
+      show_in_sidebar: true
+      filename: dashboards/smart_home_control.yaml
+    rounded-dashboard:
+      mode: yaml
+      title: Rounded Dashboard
+      icon: mdi:home-modern
+      show_in_sidebar: true
+      filename: dashboards/rounded_dashboard.yaml
+
+# Load entity customizations
+homeassistant: !include customize.yaml
+
+automation: !include automations.yaml
+script: !include_dir_merge_named scripts/
+scene: !include_dir_merge_list scenes/
+
+# Input helpers organized by category
+input_boolean: !include_dir_merge_named input_helpers/input_boolean/
+input_number: !include_dir_merge_named input_helpers/input_number/
+input_button: !include_dir_merge_named input_helpers/input_button/
+timer: !include_dir_merge_named input_helpers/timer/
+
+input_text:
+  last_dim:
+    name: Last Dim Direction
+    initial: "20" # eller 'down', beroende på vad du vill ska vara startvärdet
+
+zha:
+  enable_quirks: true
+  custom_quirks_path: /config/custom_zha_quirks
+
+# MQTT configuration organized by entity type
+mqtt: !include_dir_merge_named mqtt/
+
+# Light groups for automations
+light: !include light_groups.yaml
+
+# Groups for dashboard organization
+group: !include groups.yaml
+
+# Template sensors for dashboard summaries
+template: !include template_sensors.yaml
+
+# Notification groups
+notify: !include notify/groups.yaml

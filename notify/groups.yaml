@@ -1,0 +1,7 @@
+# Notification groups for family communication
+- platform: group
+  name: familjen
+  services:
+    - service: mobile_app_pixel_7
+    - service: mobile_app_pixel_6_pro
+    - service: mobile_app_karins_iphone

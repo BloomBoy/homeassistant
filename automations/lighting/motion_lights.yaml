@@ -1,0 +1,225 @@
+- id: '1721566992531'
+  alias: Rörelse Belysning Toalett
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.toalett_narvaro
+      time_delay: 5
+      include_night_lights: night_lights_enabled
+      light_switch:
+        entity_id: script.toalett_belysning_on
+      include_light_control:
+      - use_brightness
+      - use_colour_temperature
+      - use_transition
+      light_transition_off: 10
+      light_transition_on: 3
+      light_brightness: 50
+      end_scenes:
+      - script.toalett_belysning_off
+
+- id: '1721646926221'
+  alias: Grus Motion Lights On
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.grind_narvaro
+      time_delay: 5
+      include_night_lights: night_lights_enabled
+      light_switch:
+        entity_id: script.grus_trip_trapp_trull
+      include_light_control:
+      - use_brightness
+      - use_colour_temperature
+      - use_transition
+      light_transition_off: 3
+      light_transition_on: 3
+      light_brightness: 50
+      end_scenes:
+      - script.grus_av
+
+- id: '1749220901858'
+  alias: Skrubb motion
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.stadskrubb_narvaro
+  conditions: []
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      transition: 1
+    target:
+      entity_id: light.hall_stadskrubb_strip
+  - delay:
+      hours: 0
+      minutes: 1
+      seconds: 0
+      milliseconds: 0
+  - action: light.turn_off
+    metadata: {}
+    data:
+      transition: 15
+    target:
+      entity_id: light.hall_stadskrubb_strip
+  mode: single
+
+- id: '1734862848967'
+  alias: Sensor Light TEST
+  description: ''
+  trigger:
+  - type: motion
+    platform: device
+    device_id: e34f02324723665603790b7b860a7e41
+    entity_id: ec3cdfc656f68e3bdb1877acd089d352
+    domain: binary_sensor
+  condition:
+  - condition: state
+    entity_id: input_boolean.motion_lights
+    state: 'on'
+  - condition: template
+    value_template: '{{ is_state(''light.vagglampor_toalett'', ''off'') }}'
+  - condition: numeric_state
+    entity_id: sensor.toalett_ljusstyrka
+    below: 15
+  action:
+  - service: light.turn_on
+    metadata: {}
+    data_template:
+      kelvin: 2000
+      brightness_pct: '{{ states(''input_number.motion_lights_brightness'') | float(30) }}'
+    target:
+      entity_id: light.vagglampor_toalett
+  mode: single
+
+- id: '1734954846702'
+  alias: Karin Garderob Lights På
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.sensor_karin_garderob_narvaro
+      light_switch:
+        entity_id:
+        - light.strip_garderob_mamma_lampa_3
+      time_delay: 2.5
+      light_brightness: 76
+      light_colour_temperature: 5600
+      include_dynamic_lighting: disable_dynamic_lighting
+      dynamic_lighting_max_brightness: 80
+      dynamic_lighting_min_brightness: 7
+      dynamic_lighting_min_colour_temp: 2000
+      dynamic_lighting_max_colour_temp: 2000
+      include_light_control:
+      - use_brightness
+      - use_transition
+
+- id: '1734957297644'
+  alias: Morgan garderob höger motion på
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.sensor_morgan_garderob_hoger_narvaro
+      light_switch:
+        entity_id:
+        - light.strip_garderob_pappa_hoger_lampa
+      time_delay: 2.5
+      light_brightness: 77
+      light_colour_temperature: 5600
+      include_dynamic_lighting: enable_sun_elevation_brightness
+      dynamic_lighting_max_brightness: 90
+      dynamic_lighting_min_brightness: 7
+      dynamic_lighting_max_colour_temp: 4000
+      dynamic_lighting_min_colour_temp: 2000
+
+- id: '1734957423799'
+  alias: Morgan Garderob vänster motion på
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.sensor_morgan_garderob_vanster_narvaro
+      light_switch:
+        entity_id:
+        - light.strip_garderob_pappa_vanster_lampa_2
+      time_delay: 2.5
+      light_brightness: 77
+      light_colour_temperature: 5600
+      include_dynamic_lighting: enable_sun_elevation_brightness
+      dynamic_lighting_max_brightness: 90
+      dynamic_lighting_min_brightness: 10
+      dynamic_lighting_max_colour_temp: 4000
+      dynamic_lighting_min_colour_temp: 2000
+
+- id: '1739813831868'
+  alias: Köksbänk vibration
+  description: ''
+  use_blueprint:
+    path: Blackshome/sensor-light.yaml
+    input:
+      motion_trigger:
+      - binary_sensor.vibration_kok_vibration
+      light_switch:
+        entity_id:
+        - light.banklampor
+      include_dynamic_lighting: enable_sun_elevation_brightness
+      dynamic_lighting_max_brightness: 80
+      dynamic_lighting_min_brightness: 50
+      include_light_control:
+      - use_transition
+      time_delay: 0
+
+- id: '1749223030749'
+  alias: Köksbord Lampa Vibration På
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.vibration_kok_vibration
+    to: 'on'
+  conditions:
+  - condition: numeric_state
+    entity_id: sensor.grind_ljusstyrka
+    below: 900
+  actions:
+  - action: light.turn_on
+    metadata: {}
+    data:
+      transition: 5
+    target:
+      device_id:
+      - 309b59bf24e4ed5cadca0a954b933827
+  mode: single
+
+- id: '1749245966467'
+  alias: Köksbord Lampa Vibration Off
+  description: ''
+  triggers:
+  - trigger: state
+    entity_id:
+    - binary_sensor.vibration_kok_vibration
+    to: 'off'
+    for:
+      hours: 0
+      minutes: 5
+      seconds: 0
+  conditions: []
+  actions:
+  - action: light.turn_off
+    metadata: {}
+    data:
+      transition: 5
+    target:
+      device_id:
+      - 309b59bf24e4ed5cadca0a954b933827
+  mode: single
