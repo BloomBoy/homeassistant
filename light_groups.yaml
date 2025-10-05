@@ -1,7 +1,5 @@
 # Light Groups - grupperar lampor för enklare kontroll via automations
 # Dessa skapar light.* entities som kan användas i automations och scripts
-
-light:
   - platform: group
     name: "Lampgrupp Utomhus"
     unique_id: outdoor_lights_group
