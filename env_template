@@ -1,0 +1,14 @@
+# Home Assistant MCP Configuration
+# Long-lived access token for Home Assistant Yellow server
+HA_TOKEN=your_long_lived_access_token_here
+
+# Home Assistant Server URL
+HA_URL=http://192.168.1.191:8123
+
+# MCP Server endpoint
+HA_MCP_URL=http://192.168.1.191:8123/mcp_server/sse
+
+# Proxy configuration
+MCP_PROXY_PATH=~/.local/bin/mcp-proxy
+
+

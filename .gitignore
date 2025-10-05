@@ -6,7 +6,6 @@
 *.log.*
 
 # Runtime/cache data
-.storage/
 deps/
 tts/
 .cloud/

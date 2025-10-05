@@ -1,0 +1,20 @@
+{
+  "mcp.servers": {
+    "home-assistant": {
+      "command": "uv",
+      "args": [
+        "tool",
+        "run",
+        "mcp-proxy",
+        "-H",
+        "Authorization",
+        "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3NzEyYTVhYzBmYzY0NzFkYTBkYjkzOTk0MDRlYzk2YSIsImlhdCI6MTc1OTY4Mzk5MywiZXhwIjoyMDc1MDQzOTkzfQ.kkbktNAm5ApoJttl0tpJdMk96XzVToNb-fy8O2rMa6k",
+        "http://192.168.1.191:8123/mcp_server/sse"
+      ],
+      "env": {
+        "HA_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiI3NzEyYTVhYzBmYzY0NzFkYTBkYjkzOTk0MDRlYzk2YSIsImlhdCI6MTc1OTY4Mzk5MywiZXhwIjoyMDc1MDQzOTkzfQ.kkbktNAm5ApoJttl0tpJdMk96XzVToNb-fy8O2rMa6k"
+      }
+    }
+  }
+}
+
