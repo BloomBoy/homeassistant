@@ -47,11 +47,7 @@
         metadata: {}
         data: {}
         target:
-          entity_id:
-            - light.matsal_tvaudd_hoger
-            - light.matsal_tvaudd_vanster
-            - light.matsal_sidobord
-            - light.piano_lampa
+          entity_id: light.matsalen
 
 - id: '1734259770344'
   alias: Lampor av/PÅ arbetsrum
